@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shree AI Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .btn-new-chat {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-new-chat:hover {
+            transform: scale(1.02);
+        }
+
+        .sessions-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .session-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .session-item:hover {
+            background: #f0f0f0;
+        }
+
+        .session-item.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .session-item .session-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .session-item .session-meta {
+            font-size: 11px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .session-item .btn-delete {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .session-item .btn-delete:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Main Chat Area */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h1 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .session-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 15px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.system {
+            align-self: center;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 12px;
+            padding: 8px 16px;
+        }
+
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-area input:focus {
+            border-color: #667eea;
+        }
+
+        .btn-send {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            align-self: flex-start;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #888;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #888;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            max-width: 300px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            .sessions-list {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .session-item {
+                min-width: 150px;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>💬 Conversations</h2>
+                <button class="btn-new-chat" onclick="createNewSession()">+ New Chat</button>
+            </div>
+            <div class="sessions-list" id="sessionsList">
+                <!-- Sessions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main-chat">
+            <div class="chat-header">
+                <h1>🤖 Shree AI Agent</h1>
+                <span class="session-info" id="sessionInfo">No active session</span>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="empty-state" id="emptyState">
+                    <h2>Welcome to Shree!</h2>
+                    <p>I'm your autonomous AI assistant. Start a conversation or select an existing chat from the sidebar.</p>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button class="btn-send" id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentSessionId = null;
+        let sessions = [];
+
+        // API Base URL
+        const API_BASE = '/agent';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSessions();
+        });
+
+        // Load sessions from server
+        async function loadSessions() {
+            try {
+                const response = await fetch(`${API_BASE}/sessions`);
+                sessions = await response.json();
+                renderSessions();
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+            }
+        }
+
+        // Render sessions list
+        function renderSessions() {
+            const container = document.getElementById('sessionsList');
+            container.innerHTML = '';
+
+            sessions.forEach(session => {
+                const item = document.createElement('div');
+                item.className = `session-item ${session.sessionId === currentSessionId ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="session-title">${session.firstMessage || 'New Chat'}</div>
+                    <div class="session-meta">
+                        <span>${session.messageCount} msgs</span>
+                        <button class="btn-delete" onclick="event.stopPropagation(); deleteSession('${session.sessionId}')">✕</button>
+                    </div>
+                `;
+                item.onclick = () => loadSession(session.sessionId);
+                container.appendChild(item);
+            });
+        }
+
+        // Create new session
+        async function createNewSession() {
+            try {
+                const response = await fetch(`${API_BASE}/session`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await response.json();
+                currentSessionId = data.sessionId;
+                document.getElementById('sessionInfo').textContent = `Session: ${currentSessionId.substring(0, 8)}...`;
+                document.getElementById('emptyState').style.display = 'flex';
+                document.getElementById('messagesContainer').innerHTML = '';
+                document.getElementById('messagesContainer').appendChild(document.getElementById('emptyState'));
+                loadSessions();
+            } catch (error) {
+                console.error('Error creating session:', error);
+            }
+        }
+
+        // Load session messages
+        async function loadSession(sessionId) {
+            currentSessionId = sessionId;
+            document.getElementById('sessionInfo').textContent = `Session: ${sessionId.substring(0, 8)}...`;
+            
+            try {
+                const response = await fetch(`${API_BASE}/session/${sessionId}`);
+                const session = await response.json();
+                
+                const container = document.getElementById('messagesContainer');
+                container.innerHTML = '';
+
+                if (session.messageHistory && session.messageHistory.length > 0) {
+                    session.messageHistory.forEach(msg => {
+                        addMessage(msg.content, msg.role.toLowerCase() === 'user' ? 'user' : 'ai', false);
+                    });
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h2>New Conversation</h2>
+                            <p>Start chatting!</p>
+                        </div>
+                    `;
+                }
+
+                loadSessions();
+            } catch (error) {
+                console.error('Error loading session:', error);
+            }
+        }
+
+        // Delete session
+        async function deleteSession(sessionId) {
+            if (!confirm('Delete this conversation?')) return;
+
+            try {
+                await fetch(`${API_BASE}/session/${sessionId}`, { method: 'DELETE' });
+                if (currentSessionId === sessionId) {
+                    currentSessionId = null;
+                    document.getElementById('sessionInfo').textContent = 'No active session';
+                    document.getElementById('messagesContainer').innerHTML = `
+                        <div class="empty-state" id="emptyState">
+                            <h2>Welcome to Shree!</h2>
+                            <p>I'm your autonomous AI assistant. Start a conversation or select an existing chat from the sidebar.</p>
+                        </div>
+                    `;
+                }
+                loadSessions();
+            } catch (error) {
+                console.error('Error deleting session:', error);
+            }
+        }
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            // Create session if none exists
+            if (!currentSessionId) {
+                await createNewSession();
+            }
+
+            // Clear input
+            input.value = '';
+
+            // Add user message
+            addMessage(message, 'user');
+
+            // Show typing indicator
+            document.getElementById('typingIndicator').classList.add('show');
+            document.getElementById('sendBtn').disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE}/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        sessionId: currentSessionId
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Hide typing indicator
+                document.getElementById('typingIndicator').classList.remove('show');
+                document.getElementById('sendBtn').disabled = false;
+
+                // Add AI response
+                addMessage(data.suggestion, 'ai');
+
+                // Update session info if changed
+                if (data.sessionId && data.sessionId !== currentSessionId) {
+                    currentSessionId = data.sessionId;
+                    document.getElementById('sessionInfo').textContent = `Session: ${currentSessionId.substring(0, 8)}...`;
+                }
+
+                // Refresh sessions list
+                loadSessions();
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                document.getElementById('typingIndicator').classList.remove('show');
+                document.getElementById('sendBtn').disabled = false;
+                addMessage('Sorry, there was an error processing your request.', 'system');
+            }
+        }
+
+        // Add message to chat
+        function addMessage(text, type, animate = true) {
+            const container = document.getElementById('messagesContainer');
+            const emptyState = document.getElementById('emptyState');
+            if (emptyState) emptyState.remove();
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}`;
+            msgDiv.textContent = text;
+            
+            if (animate) {
+                msgDiv.style.animation = 'none';
+                container.appendChild(msgDiv);
+                // Trigger reflow
+                void msgDiv.offsetWidth;
+                msgDiv.style.animation = 'fadeIn 0.3s ease';
+            } else {
+                container.appendChild(msgDiv);
+            }
+
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Handle enter key
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
