@@ -14,6 +14,17 @@ public class Concept {
         this.lastSeen = LocalDateTime.now();
     }
 
+    // Constructor with frequency for JSON deserialization
+    public Concept(String name, int frequency) {
+        this.name = name.toLowerCase();
+        this.frequency = frequency;
+        this.lastSeen = LocalDateTime.now();
+    }
+
+    // Default constructor for JSON deserialization
+    public Concept() {
+    }
+
     public void reinforce() {
         frequency++;
         lastSeen = LocalDateTime.now();

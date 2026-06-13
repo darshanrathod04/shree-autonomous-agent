@@ -1,0 +1,31 @@
+{
+  "sessionId" : "ab94f4f5-9d3c-4f4a-9c4c-01890d61e4b5",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: test message\nUSER: test message\nAI: Sorry, my brain is warming up...\nAI: \uD83D\uDE0A Sorry, my brain is warming up! \uD83D\uDE42! \uD83D\uDE42! \uD83D\uDE42 Take your time! \uD83D\uDE42\n"
+  },
+  "createdAt" : 1781326538.961460900,
+  "lastAccessedAt" : 1781326539.146499100,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "test message",
+    "timestamp" : 1781326538.963461000,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up! \uD83D\uDE42! \uD83D\uDE42! \uD83D\uDE42 Take your time! \uD83D\uDE42",
+    "timestamp" : 1781326539.146499100,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "expired" : false,
+  "summary" : "USER: test message\nAI: \uD83D\uDE0A Sorry, my brain is warming up! \uD83D\uDE42! \uD83D\uDE42! \uD83D\uDE42 Take ...\n",
+  "firstMessage" : "test message"
+}

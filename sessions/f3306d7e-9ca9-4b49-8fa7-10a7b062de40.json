@@ -1,0 +1,31 @@
+{
+  "sessionId" : "f3306d7e-9ca9-4b49-8fa7-10a7b062de40",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "Past experiences:\nRelevant past experiences:\n- User: My name is Darshan\n  Outcome: Stored identity: Darshan\n- User: My name is Darshan\n  Outcome: Stored identity: Darshan",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: My name is Darshan\nUSER: My name is Darshan\nAI: Your name is Darshan. I remember you. \uD83E\uDDE0\nUSER: My name is Darshan\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.\n"
+  },
+  "createdAt" : 1781328856.166957200,
+  "lastAccessedAt" : 1781328856.174534700,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "My name is Darshan",
+    "timestamp" : 1781328856.170204500,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.",
+    "timestamp" : 1781328856.174534700,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: My name is Darshan\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take y...\n",
+  "firstMessage" : "My name is Darshan",
+  "expired" : false
+}

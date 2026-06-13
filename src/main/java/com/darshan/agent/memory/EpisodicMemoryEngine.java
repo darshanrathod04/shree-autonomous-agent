@@ -6,19 +6,12 @@ import com.darshan.agent.memory.episodic.EpisodeStore;
 import com.darshan.agent.memory.episodic.EpisodeType;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class EpisodicMemoryEngine {
 
     private final EpisodeStore store;
-    private final List<Episode> episodes = new ArrayList<>();
-
-
-    public List<Episode> getEpisodes() {
-        return episodes;
-    }
 
     public EpisodicMemoryEngine(EpisodeStore store) {
         this.store = store;
@@ -68,10 +61,18 @@ public class EpisodicMemoryEngine {
                 ? text.substring(0, 60) + "..."
                 : text;
     }
+
+    /**
+     * Store episode directly. Now delegates to EpisodeStore (single source of truth).
+     */
     public void store(Episode episode) {
-        episodes.add(episode);
+        store.add(episode);
     }
+
+    /**
+     * Returns all episodes from EpisodeStore (single source of truth).
+     */
     public List<Episode> all() {
-        return episodes;
+        return store.all();
     }
 }
