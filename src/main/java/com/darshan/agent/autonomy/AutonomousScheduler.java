@@ -2,44 +2,70 @@ package com.darshan.agent.autonomy;
 
 import com.darshan.agent.context.ContextStore;
 import com.darshan.agent.context.ConversationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class AutonomousScheduler {
 
+    private static final Logger log = LoggerFactory.getLogger(AutonomousScheduler.class);
+
     private final AutonomousLoop loop;
     private final ContextStore contextStore;
+
+    // When true, autonomous processing is paused to allow user requests through
+    private static final AtomicBoolean paused = new AtomicBoolean(false);
 
     public AutonomousScheduler(
             AutonomousLoop loop,
             ContextStore contextStore) {
-
         this.loop = loop;
         this.contextStore = contextStore;
     }
 
-    private boolean running = false;
+    /**
+     * Pause autonomous processing (called when user request arrives).
+     */
+    public static void pause() {
+        paused.set(true);
+    }
 
-    @Scheduled(fixedDelay = 10000)
+    /**
+     * Resume autonomous processing (called after user request completes).
+     */
+    public static void resume() {
+        paused.set(false);
+    }
+
+    /**
+     * Check if autonomous processing is paused.
+     */
+    public static boolean isPaused() {
+        return paused.get();
+    }
+
+    @Scheduled(fixedDelay = 15000)  // Increased from 10s to 15s
     public void think() {
+        // Skip autonomous tick if paused (user request in progress)
+        if (paused.get()) {
+            log.debug("[Autonomous] Skipping tick - paused for user request");
+            return;
+        }
 
-        System.out.println("⏱ Autonomous tick...");
+        log.info("[Autonomous] Tick...");
         try {
-            ConversationContext context =
-                    contextStore.getContext();
-
+            ConversationContext context = contextStore.getContext();
             String result = loop.run(context);
 
             if (result != null) {
-                System.out.println("🤖 Autonomous Thought:");
-                System.out.println(result);
+                log.info("[Autonomous] Thought: {}", result);
             }
-
         } catch (Exception e) {
-            System.out.println("Autonomous error: " + e.getMessage());
-        } finally {
-            running = false;
+            log.error("[Autonomous] Error: {}", e.getMessage());
         }
     }
 }

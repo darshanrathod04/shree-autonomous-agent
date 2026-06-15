@@ -1,0 +1,31 @@
+{
+  "sessionId" : "9c4f0938-b0aa-4f3a-b670-0ded7c6d034a",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "GREETING",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree! \uD83D\uDE42\n\n(Self-correction applied) Take your time! \uD83D\uDE42\n"
+  },
+  "createdAt" : 1781326538.647037000,
+  "lastAccessedAt" : 1781326538.739717500,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hello",
+    "timestamp" : 1781326538.731457500,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree! \uD83D\uDE42\n\n(Self-correction applied) Take your time! \uD83D\uDE42",
+    "timestamp" : 1781326538.739717500,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "expired" : false,
+  "summary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree! \uD83D\uDE42\n\n(Self-correction appli...\n",
+  "firstMessage" : "hello"
+}

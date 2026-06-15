@@ -1,0 +1,31 @@
+{
+  "sessionId" : "c85a26f4-29a8-42ef-aaaa-3aa6455e0cfb",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "WHO_AM_I",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "createdAt" : 1781537948.681359700,
+  "lastAccessedAt" : 1781537948.687875400,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "Who am I?",
+    "timestamp" : 1781537948.683359800,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.",
+    "timestamp" : 1781537948.687875400,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: Who am I?\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take y...\n",
+  "expired" : false,
+  "firstMessage" : "Who am I?"
+}

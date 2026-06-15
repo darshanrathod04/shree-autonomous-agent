@@ -1,0 +1,31 @@
+{
+  "sessionId" : "5f4a1211-39ab-4fe6-b3ce-33f927f80780",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "WHO_AM_I",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: Who am I?\nUSER: Who am I?\nAI: Your name is Darshan. I remember you. \uD83E\uDDE0\nUSER: Who am I?\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.\n"
+  },
+  "createdAt" : 1781328856.176765000,
+  "lastAccessedAt" : 1781328856.181489300,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "Who am I?",
+    "timestamp" : 1781328856.179148000,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.",
+    "timestamp" : 1781328856.181489300,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: Who am I?\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take y...\n",
+  "firstMessage" : "Who am I?",
+  "expired" : false
+}

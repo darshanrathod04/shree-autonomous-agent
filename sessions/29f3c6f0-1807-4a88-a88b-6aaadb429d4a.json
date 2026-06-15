@@ -1,0 +1,31 @@
+{
+  "sessionId" : "29f3c6f0-1807-4a88-a88b-6aaadb429d4a",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : null,
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : null,
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: goal: Learn Java\nAI: Goal accepted. Shree is now working autonomously.\n"
+  },
+  "createdAt" : 1781531953.273599300,
+  "lastAccessedAt" : 1781531953.280849300,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "goal: Learn Java",
+    "timestamp" : 1781531953.274612700,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "Goal accepted. Shree is now working autonomously.",
+    "timestamp" : 1781531953.280849300,
+    "intent" : null
+  } ],
+  "summary" : "USER: goal: Learn Java\nAI: Goal accepted. Shree is now working autonomously.\n",
+  "messageCount" : 2,
+  "expired" : false,
+  "firstMessage" : "goal: Learn Java"
+}

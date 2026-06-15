@@ -19,8 +19,8 @@ public class SwarmWorkerAgent {
     }
 
     public String solve(String problem) {
-
-        return llm.generate("""
+        // Use generateDirect to avoid duplicate memory recall
+        return llm.generateDirect("""
         Solve logically and clearly:
 
         %s

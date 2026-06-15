@@ -1,7 +1,7 @@
 package com.darshan.agent.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -26,8 +26,8 @@ public class SessionRepository {
     
     public SessionRepository() {
         this.objectMapper = new ObjectMapper();
-        // Write dates as timestamps (milliseconds since epoch)
-        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        // Register JSR310 module for Java 8 date/time serialization support
+        this.objectMapper.registerModule(new JavaTimeModule());
         this.sessionCache = new ConcurrentHashMap<>();
         
         // Ensure sessions directory exists

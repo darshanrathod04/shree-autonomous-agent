@@ -1,0 +1,14 @@
+{
+  "lessonChapters" : {
+    "dsa" : [ "Arrays and Strings", "Linked Lists", "Stacks and Queues", "Trees", "Graphs", "Sorting Algorithms", "Searching Algorithms", "Dynamic Programming" ],
+    "java" : [ "Introduction to Java", "Variables and Data Types", "Control Flow", "Object-Oriented Programming", "Collections Framework", "Exception Handling", "File I/O", "Streams and Lambdas" ],
+    "python" : [ "Introduction to Python", "Core Concepts", "Practical Examples", "Advanced Topics", "Best Practices" ],
+    "spring boot" : [ "What is Spring Framework", "Spring Boot Setup", "Dependency Injection", "REST APIs", "Data Access with JPA", "Testing", "Spring Security Basics" ]
+  },
+  "lessonProgress" : {
+    "spring boot" : 2,
+    "python" : 2,
+    "dsa" : 2,
+    "java" : 2
+  }
+}

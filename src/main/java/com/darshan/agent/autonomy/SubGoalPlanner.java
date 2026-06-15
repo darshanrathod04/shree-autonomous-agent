@@ -21,7 +21,7 @@ public class SubGoalPlanner {
         Goal:
         """ + goal.getDescription();
 
-        String result = llm.generate(prompt);
+        String result = llm.generateDirect(prompt);
 
         String[] steps = result.split("\n");
 

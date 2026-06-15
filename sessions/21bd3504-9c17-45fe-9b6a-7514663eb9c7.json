@@ -1,0 +1,31 @@
+{
+  "sessionId" : "21bd3504-9c17-45fe-9b6a-7514663eb9c7",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "createdAt" : 1781537948.848910800,
+  "lastAccessedAt" : 1781537980.057400200,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "test message",
+    "timestamp" : 1781537948.850910300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello there! I see you’re testing out our communication, which is great practice for me to understand your needs better. How can I assist you today? If you have a specific question or topic in mind, feel free to share it with **bold** emphasis on the key terms and we'll tackle them together using markdown formatting! Take your time.",
+    "timestamp" : 1781537980.057400200,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: test message\nAI: \uD83D\uDE0A Hello there! I see you’re testing out our commu...\n",
+  "expired" : false,
+  "firstMessage" : "test message"
+}

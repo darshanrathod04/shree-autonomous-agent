@@ -1,0 +1,41 @@
+{
+  "sessionId" : "e2f8f384-5e3a-4684-bb8c-b90360970288",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: hello\nUSER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.\nUSER: could you create a jave learning roadmap\nUSER: could you create a jave learning roadmap\nAI: Sorry, my brain is warming up...\nUSER: could you create a jave learning roadmap\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time.\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time.\n"
+  },
+  "createdAt" : 1781419503.702846700,
+  "lastAccessedAt" : 1781419670.722746200,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hello",
+    "timestamp" : 1781419503.706628400,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.",
+    "timestamp" : 1781419503.712525300,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "could you create a jave learning roadmap",
+    "timestamp" : 1781419550.510807100,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781419670.722746200,
+    "intent" : null
+  } ],
+  "summary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied)...\nUSER: could you create a jave learning roadmap\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time...\n",
+  "expired" : false,
+  "messageCount" : 4,
+  "firstMessage" : "hello"
+}
