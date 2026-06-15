@@ -34,6 +34,6 @@ public class SwarmJudge {
                 Return the best final answer only.
                 """.formatted(combined);
 
-        return llm.generate(prompt);
+        return llm.generateDirect(prompt);
     }
 }

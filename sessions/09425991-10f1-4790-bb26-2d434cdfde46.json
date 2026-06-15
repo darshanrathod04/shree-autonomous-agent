@@ -1,0 +1,61 @@
+{
+  "sessionId" : "09425991-10f1-4790-bb26-2d434cdfde46",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "FOLLOW_UP",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.\nUSER: hii i am darshan\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.\nUSER: what  is java\nAI: \uD83D\uDE0A **Java** is an **object-oriented programming (OOP) language** that you might find interesting, Darshan! It's widely used for building applications on everything from servers to desktops and even mobile devices. Java was designed with the goals of 'write once, run anywhere,' which means code written in Java can often be executed across many types of platforms without modification. I encourage you to explore it further; there are plenty of resources online where beginners learn step by step! \uD83D\uDE04 Take your time.\nUSER: next\nAI: \uD83D\uDE0A AI: Of course, Darshan! Moving forward is exciting. As we continue our journey through learning **Java** or any new subject, remember that practice makes perfect. I'm here to assist you with resources, exercises, and explanations whenever needed. Keep up the great work! \uD83D\uDE0A Take your time.\n"
+  },
+  "createdAt" : 1781535015.641357100,
+  "lastAccessedAt" : 1781535151.196709900,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hello",
+    "timestamp" : 1781535015.689951100,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.",
+    "timestamp" : 1781535015.701302400,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "hii i am darshan",
+    "timestamp" : 1781535033.992417300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.",
+    "timestamp" : 1781535034.008853600,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what  is java",
+    "timestamp" : 1781535048.013656600,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A **Java** is an **object-oriented programming (OOP) language** that you might find interesting, Darshan! It's widely used for building applications on everything from servers to desktops and even mobile devices. Java was designed with the goals of 'write once, run anywhere,' which means code written in Java can often be executed across many types of platforms without modification. I encourage you to explore it further; there are plenty of resources online where beginners learn step by step! \uD83D\uDE04 Take your time.",
+    "timestamp" : 1781535071.161615200,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "next",
+    "timestamp" : 1781535142.369563100,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A AI: Of course, Darshan! Moving forward is exciting. As we continue our journey through learning **Java** or any new subject, remember that practice makes perfect. I'm here to assist you with resources, exercises, and explanations whenever needed. Keep up the great work! \uD83D\uDE0A Take your time.",
+    "timestamp" : 1781535151.196709900,
+    "intent" : null
+  } ],
+  "summary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied)...\nUSER: hii i am darshan\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied)...\nUSER: what  is java\nAI: \uD83D\uDE0A **Java** is an **object-oriented programming (O...\nUSER: next\nAI: \uD83D\uDE0A AI: Of course, Darshan! Moving forward is excit...\n",
+  "expired" : false,
+  "firstMessage" : "hello",
+  "messageCount" : 8
+}

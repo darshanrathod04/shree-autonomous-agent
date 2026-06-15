@@ -2,6 +2,7 @@ package com.darshan.agent.controller;
 
 import com.darshan.agent.context.ConversationSession;
 import com.darshan.agent.context.ConversationSessionManager;
+import com.darshan.agent.context.SessionMessage;
 import com.darshan.agent.dto.AgentRequest;
 import com.darshan.agent.dto.AgentResponse;
 import com.darshan.agent.memory.ActivityFeed;
@@ -94,6 +95,24 @@ public class AgentController {
                     result.put("error", "Session not found");
                     return result;
                 });
+    }
+
+    /**
+     * Get messages for a specific session.
+     */
+    @GetMapping("/session/{sessionId}/messages")
+    public List<Map<String, Object>> getSessionMessages(@PathVariable String sessionId) {
+        return sessionManager.getSession(sessionId)
+                .map(session -> session.getMessageHistory().stream()
+                        .map(msg -> {
+                            Map<String, Object> result = new HashMap<>();
+                            result.put("role", msg.getRole());
+                            result.put("content", msg.getContent());
+                            result.put("timestamp", msg.getTimestamp());
+                            return result;
+                        })
+                        .collect(Collectors.toList()))
+                .orElse(List.of());
     }
 
     /**

@@ -16,14 +16,9 @@ public class ConversationSessionManager {
     
     private final SessionRepository repository;
     
-    // Fallback to original ContextStore for backward compatibility
-    private final ContextStore fallbackContextStore;
-    
     public ConversationSessionManager(
-            SessionRepository repository,
-            ContextStore fallbackContextStore) {
+            SessionRepository repository) {
         this.repository = repository;
-        this.fallbackContextStore = fallbackContextStore;
     }
     
     /**
@@ -121,16 +116,6 @@ public class ConversationSessionManager {
      */
     public int getActiveSessionCount() {
         return repository.getActiveSessionCount();
-    }
-    
-    /**
-     * Get the original fallback context (for backward compatibility).
-     * This allows gradual migration without breaking existing code.
-     * @deprecated Use session-based methods instead
-     */
-    @Deprecated
-    public ConversationContext getFallbackContext() {
-        return fallbackContextStore.getContext();
     }
     
     /**

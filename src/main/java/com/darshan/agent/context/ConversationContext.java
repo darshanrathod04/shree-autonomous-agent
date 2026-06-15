@@ -1,5 +1,7 @@
 package com.darshan.agent.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConversationContext {
 
     @Setter
@@ -136,6 +138,8 @@ public class ConversationContext {
     public String getUserName() {
         return userName;
     }
+
+
 
 }
 

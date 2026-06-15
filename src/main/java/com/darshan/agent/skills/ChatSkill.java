@@ -55,14 +55,12 @@ public class ChatSkill implements Skill {
     @Override
     public String execute(String input, ConversationContext context) {
 
-        context.addUserMessage(input);
-
         // HARD IDENTITY RECALL
         if (isIdentityQuestion(input)) {
             String name = userProfile.getName();
             if (name != null && !name.isBlank()) {
                 String response = "Your name is " + name + ". I remember you. 🧠";
-                context.addAgentMessage(response);
+                // History is managed by SessionManager - no direct addAgentMessage here
                 return response;
             }
             return "I don't know your name yet. Tell me your name and I'll remember it! 😊";
@@ -100,7 +98,6 @@ public class ChatSkill implements Skill {
         else
             motivationEngine.getState().decreaseConfidence();
 
-        context.addAgentMessage(response);
         return response;
     }
 

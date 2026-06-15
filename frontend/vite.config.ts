@@ -16,6 +16,7 @@ export default defineConfig({
       '/agent': {
         target: 'http://localhost:8080',
         changeOrigin: true,
+        timeout: 120000,
       },
     },
   },

@@ -1,15 +1,20 @@
 package com.darshan.agent.service;
 
+import com.darshan.agent.autonomy.AutonomousScheduler;
 import com.darshan.agent.autonomy.GoalManager;
 import com.darshan.agent.brain.AgentBrain;
 import com.darshan.agent.context.ConversationContext;
 import com.darshan.agent.context.ConversationSession;
 import com.darshan.agent.context.ConversationSessionManager;
 import com.darshan.agent.dto.AgentResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AgentService {
+
+    private static final Logger log = LoggerFactory.getLogger(AgentService.class);
 
     private final AgentBrain brain;
     private final GoalManager goals;
@@ -19,7 +24,6 @@ public class AgentService {
             AgentBrain brain,
             GoalManager goals,
             ConversationSessionManager sessionManager) {
-
         this.brain = brain;
         this.goals = goals;
         this.sessionManager = sessionManager;
@@ -32,50 +36,57 @@ public class AgentService {
      * @return The agent's response with session ID
      */
     public AgentResponse process(String input, String sessionId) throws Exception {
-        
-        // Get or create session
-        ConversationSession session = sessionManager.getOrCreateSession(sessionId);
-        ConversationContext context = session.getContext();
-        
-        // Add user message to session history
-        sessionManager.addMessage(session, "USER", input);
+        long start = System.currentTimeMillis();
+        log.info("[AgentService] Processing request, sessionId={}, inputLength={}", sessionId, input.length());
 
-        // 🎯 Goal command
-        if (input.toLowerCase().startsWith("goal:")) {
+        // Pause autonomous processing during user request
+        AutonomousScheduler.pause();
 
-            goals.createGoal(
-                    input.replace("goal:", "").trim()
-            );
-            
-            sessionManager.addMessage(session, "AI", 
-                    "🎯 Goal accepted. Shree is now working autonomously.");
+        try {
+            // Get or create session
+            ConversationSession session = sessionManager.getOrCreateSession(sessionId);
+            ConversationContext context = session.getContext();
 
+            // Add user message to session history
+            sessionManager.addMessage(session, "USER", input);
+
+            // Goal command
+            if (input.toLowerCase().startsWith("goal:")) {
+                goals.createGoal(input.replace("goal:", "").trim());
+                sessionManager.addMessage(session, "AI", "Goal accepted. Shree is now working autonomously.");
+                return new AgentResponse(
+                        "Goal accepted. Shree is now working autonomously.",
+                        false,
+                        session.getSessionId()
+                );
+            }
+
+            // Process through brain
+            long brainStart = System.currentTimeMillis();
+            AgentResponse response = brain.process(input, context);
+            long brainElapsed = System.currentTimeMillis() - brainStart;
+            log.info("[AgentService] Brain processing completed in {}ms", brainElapsed);
+
+            // Add agent response to session history
+            sessionManager.addMessage(session, "AI", response.getSuggestion());
+
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("[AgentService] Request completed in {}ms (total)", elapsed);
+
+            // Return response with session ID
             return new AgentResponse(
-                    "🎯 Goal accepted. Shree is now working autonomously.",
-                    false,
+                    response.getSuggestion(),
+                    response.isApprovalRequired(),
                     session.getSessionId()
             );
+        } finally {
+            // Always resume autonomous processing
+            AutonomousScheduler.resume();
         }
-
-        // Process through brain
-        AgentResponse response = brain.process(input, context);
-        
-        // Add agent response to session history
-        sessionManager.addMessage(session, "AI", response.getSuggestion());
-
-        // Return response with session ID
-        return new AgentResponse(
-                response.getSuggestion(),
-                response.isApprovalRequired(),
-                session.getSessionId()
-        );
     }
-    
+
     /**
      * Backward compatible process method (uses fallback context).
-     * @param input The user's message
-     * @return The agent's response
-     * @deprecated Use process(input, sessionId) instead
      */
     @Deprecated
     public AgentResponse process(String input) throws Exception {

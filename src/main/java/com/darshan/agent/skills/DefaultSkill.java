@@ -26,7 +26,7 @@ public class DefaultSkill implements Skill {
     public String execute(String input,
                           ConversationContext context) {
 
-        return llm.generate(input);
+        return llm.generateDirect(input);
     }
 
 }

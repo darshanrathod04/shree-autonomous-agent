@@ -52,24 +52,15 @@ public class ConversationSession {
     public void addMessage(String role, String content) {
         messageHistory.add(new SessionMessage(role, content));
         touch();
-        
-        // Also update the context's conversation history
-        if ("USER".equals(role)) {
-            context.addUserMessage(content);
-        } else if ("AI".equals(role)) {
-            context.addAgentMessage(content);
-        }
+        // Session owns messageHistory as the single source of truth for conversation history.
+        // context.history is deprecated in favor of session messageHistory.
     }
     
     public void addMessage(String role, String content, String intent) {
         messageHistory.add(new SessionMessage(role, content, intent));
         touch();
-        
-        if ("USER".equals(role)) {
-            context.addUserMessage(content);
-        } else if ("AI".equals(role)) {
-            context.addAgentMessage(content);
-        }
+        // Session owns messageHistory as the single source of truth for conversation history.
+        // context.history is deprecated in favor of session messageHistory.
     }
     
     public String getSummary() {

@@ -41,47 +41,64 @@ public class PromptBuilder {
 
     /**
      * Build a comprehensive prompt with all available context.
+     * The user's current message MUST dominate the prompt.
+     * @param isLearningIntent If true, include lesson context; otherwise exclude it.
      */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
+    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent) {
         StringBuilder prompt = new StringBuilder();
 
-        // System identity
-        prompt.append("You are Shree, a personal AI tutor and assistant.\n\n");
+        // System identity - concise, focused prompt
+        prompt.append("""
+                You are Shree, a personal AI tutor and assistant created by Darshan.
 
-        // User profile
+                RULES:
+                - Answer the user's question directly and accurately
+                - Use **bold** for key terms
+                - Use markdown formatting for readability
+                - Be warm, encouraging, and educational
+                - Keep responses focused on the user's question
+
+                """);
+
+        // User profile - only if relevant
         String profileContext = buildProfileContext();
         if (!profileContext.isEmpty()) {
             prompt.append("USER PROFILE:\n").append(profileContext).append("\n");
         }
 
-        // Active goal context
+        // Active goal context - only if relevant to current question
         String goalContext = buildGoalContext();
         if (!goalContext.isEmpty()) {
             prompt.append("ACTIVE GOAL:\n").append(goalContext).append("\n");
         }
 
-        // Current lesson context
-        String lessonContext = buildLessonContext();
-        if (!lessonContext.isEmpty()) {
-            prompt.append("CURRENT LESSON:\n").append(lessonContext).append("\n");
+        // Current lesson context - ONLY if learning intent is detected
+        if (isLearningIntent) {
+            String lessonContext = buildLessonContext();
+            if (!lessonContext.isEmpty()) {
+                prompt.append("CURRENT LESSON:\n").append(lessonContext).append("\n");
+            }
         }
 
-        // Memory from past interactions
+        // Memory from past interactions - limit to most relevant
         String memory = context.getWorkingMemory();
         if (memory != null && !memory.isEmpty()) {
-            prompt.append("PAST EXPERIENCES:\n").append(memory).append("\n");
+            // Truncate memory to prevent prompt bloat
+            String truncatedMemory = memory.length() > 500 ? memory.substring(0, 500) + "..." : memory;
+            prompt.append("PAST EXPERIENCES:\n").append(truncatedMemory).append("\n");
         }
 
-        // Semantic knowledge
-        String semanticHint = semantic.recall(input);
-        if (!semanticHint.isEmpty()) {
-            prompt.append("RELEVANT KNOWLEDGE:\n").append(semanticHint).append("\n");
-        }
-
-        // Conversation history
+        // Conversation history - limit to last 3 exchanges
         String history = context.getConversationSummary();
         if (history != null && !history.isEmpty()) {
-            prompt.append("RECENT CONVERSATION:\n").append(history).append("\n");
+            // Only include last 3 lines of conversation history
+            String[] lines = history.split("\n");
+            int start = Math.max(0, lines.length - 6);
+            StringBuilder recentHistory = new StringBuilder();
+            for (int i = start; i < lines.length; i++) {
+                recentHistory.append(lines[i]).append("\n");
+            }
+            prompt.append("RECENT CONVERSATION:\n").append(recentHistory).append("\n");
         }
 
         // Executive instruction
@@ -89,10 +106,17 @@ public class PromptBuilder {
             prompt.append("INSTRUCTION: ").append(instruction).append("\n");
         }
 
-        // Current input
+        // Current input - MUST be last and prominent
         prompt.append("USER: ").append(input).append("\n");
 
         return prompt.toString();
+    }
+
+    /**
+     * Overloaded method for backward compatibility (no learning intent = exclude lesson context).
+     */
+    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
+        return buildFullPrompt(input, instruction, context, false);
     }
 
     /**

@@ -10,16 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConversationManager {
 
-    private final ContextStore contextStore;
     private final SkillRouter router;
     private final GoalManager goalManager;
 
     public ConversationManager(
-            ContextStore contextStore,
             SkillRouter router,
             GoalManager goalManager) {
 
-        this.contextStore = contextStore;
         this.router = router;
         this.goalManager = goalManager;
     }
@@ -27,10 +24,11 @@ public class ConversationManager {
     /**
      * MAIN BRAIN ENTRYPOINT
      */
-    public String process(String userMessage) throws Exception {
+    public String process(String userMessage, ConversationContext context) throws Exception {
 
-        ConversationContext context =
-                contextStore.getContext();
+        if (context == null) {
+            return "No context provided. Use session-based processing.";
+        }
 
         // 1️⃣ detect GOAL
         if (userMessage.startsWith("Goal:")) {

@@ -7,6 +7,8 @@ import com.darshan.agent.personality.AgentPersonality;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,14 +19,15 @@ import java.util.Map;
 @Component
 public class OllamaClient {
 
-    private static final String URL =
-            "http://localhost:11434/api/generate";
+    private static final Logger log = LoggerFactory.getLogger(OllamaClient.class);
+    private static final String URL = "http://localhost:11434/api/generate";
+    private static final String MODEL = "phi3";
 
     private final OkHttpClient client =
             new OkHttpClient.Builder()
-                    .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-                    .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
-                    .writeTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+                    .connectTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(90, java.util.concurrent.TimeUnit.SECONDS)
+                    .writeTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
                     .build();
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -32,9 +35,6 @@ public class OllamaClient {
     private final MemoryRetriever memory;
     private final MemoryRecallEngine recall;
     private final MemoryRecallService recallService;
-
-
-
 
     public OllamaClient(AgentPersonality personality, MemoryRetriever memory, MemoryRecallEngine recall, MemoryRecallService recallService) {
         this.personality = personality;
@@ -44,34 +44,54 @@ public class OllamaClient {
     }
 
     // ===============================
-    // PUBLIC API
+    // PUBLIC API - Legacy (with own memory recall)
     // ===============================
     public String generate(String userInput) {
+        long start = System.currentTimeMillis();
+        log.info("[Ollama] generate() called with input length={}", userInput.length());
 
-        // 1️⃣ Recall relevant memories
+        // 1 Recall relevant memories
         List<String> memories = recall.recall(userInput);
-
         String memoryContext = "";
-
         if (!memories.isEmpty()) {
-            memoryContext =
-                    "\nRelevant memories about the user:\n"
-                            + String.join("\n", memories)
-                            + "\n";
+            memoryContext = "\nRelevant memories about the user:\n"
+                    + String.join("\n", memories) + "\n";
         }
 
-        // 2️⃣ Build intelligent prompt
-        String prompt =
-                personality.systemPrompt()
-                        + memoryContext
-                        + "\nUser: " + userInput
-                        + "\nShree:";
-
+        // 2 Build prompt
+        String prompt = personality.systemPrompt()
+                + memoryContext
+                + "\nUser: " + userInput
+                + "\nShree:";
 
         try {
-            return callOllama(prompt);
+            String result = callOllama(prompt);
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("[Ollama] generate() completed in {}ms, response length={}", elapsed, result.length());
+            return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            long elapsed = System.currentTimeMillis() - start;
+            log.error("[Ollama] generate() FAILED after {}ms: {}", elapsed, e.getMessage());
+            return "Sorry, my brain is warming up...";
+        }
+    }
+
+    // ===============================
+    // PUBLIC API - Direct prompt (no duplicate memory recall)
+    // Use this when the caller has already built a complete prompt.
+    // ===============================
+    public String generateDirect(String fullPrompt) {
+        long start = System.currentTimeMillis();
+        log.info("[Ollama] generateDirect() called with prompt length={}", fullPrompt.length());
+
+        try {
+            String result = callOllama(fullPrompt);
+            long elapsed = System.currentTimeMillis() - start;
+            log.info("[Ollama] generateDirect() completed in {}ms, response length={}", elapsed, result.length());
+            return result;
+        } catch (Exception e) {
+            long elapsed = System.currentTimeMillis() - start;
+            log.error("[Ollama] generateDirect() FAILED after {}ms: {}", elapsed, e.getMessage());
             return "Sorry, my brain is warming up...";
         }
     }
@@ -82,13 +102,14 @@ public class OllamaClient {
     private String callOllama(String prompt) throws IOException {
 
         Map<String, Object> body = new HashMap<>();
-        body.put("model", "phi3");
+        body.put("model", MODEL);
         body.put("prompt", prompt);
         body.put("stream", false);
 
         body.put("options", Map.of(
                 "temperature", 0.7,
-                "stop", List.of("User:", "Shree:")
+                "num_predict", 1024,
+                "stop", List.of("User:")
         ));
 
         String json = mapper.writeValueAsString(body);
@@ -101,20 +122,15 @@ public class OllamaClient {
                 ))
                 .build();
 
-        try (Response response =
-                     client.newCall(request).execute()) {
+        try (Response response = client.newCall(request).execute()) {
 
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
 
-            String responseBody =
-                    response.body().string();
+            String responseBody = response.body().string();
+            JsonNode node = mapper.readTree(responseBody);
 
-            JsonNode node =
-                    mapper.readTree(responseBody);
-
-            // ✅ THIS IS THE MODEL OUTPUT
             return node.get("response").asText().trim();
         }
     }
