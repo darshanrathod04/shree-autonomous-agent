@@ -7,12 +7,15 @@ import com.darshan.agent.context.LessonEngine;
 import com.darshan.agent.context.LessonState;
 import com.darshan.agent.debate.swarm.DebateSwarmEngine;
 import com.darshan.agent.dto.AgentResponse;
+import com.darshan.agent.graph.KnowledgeGraphEngine;
 import com.darshan.agent.llm.OllamaClient;
 import com.darshan.agent.memory.MemoryFacade;
 import com.darshan.agent.personality.PersonalityEngine;
 import com.darshan.agent.router.SkillRouter;
 import com.darshan.agent.skills.Skill;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AgentBrain {
@@ -29,6 +32,7 @@ public class AgentBrain {
     private final LessonEngine lessonEngine;
     private final PromptBuilder promptBuilder;
     private final OllamaClient ollamaClient;
+    private final KnowledgeGraphEngine knowledgeGraph;
 
     public AgentBrain(
             CognitiveGovernorEngine governor,
@@ -42,7 +46,8 @@ public class AgentBrain {
             IdentityPerceptionEngine identityPerceptionEngine,
             LessonEngine lessonEngine,
             PromptBuilder promptBuilder,
-            OllamaClient ollamaClient
+            OllamaClient ollamaClient,
+            KnowledgeGraphEngine knowledgeGraph
     ) {
         this.governor = governor;
         this.stateMachine = stateMachine;
@@ -56,10 +61,11 @@ public class AgentBrain {
         this.lessonEngine = lessonEngine;
         this.promptBuilder = promptBuilder;
         this.ollamaClient = ollamaClient;
+        this.knowledgeGraph = knowledgeGraph;
     }
 
     // =====================================================
-    // 🧠 MAIN COGNITIVE PIPELINE
+    // MAIN COGNITIVE PIPELINE
     // =====================================================
     public AgentResponse process(
             String input,
@@ -71,9 +77,7 @@ public class AgentBrain {
             context = new ConversationContext();
         }
 
-        // -------------------------------------------------
-        // 1️⃣ GOVERNOR (Safety + Stability)
-        // -------------------------------------------------
+        // 1. GOVERNOR (Safety + Stability)
         CognitiveDecision decision =
                 governor.evaluate(input, context);
 
@@ -86,35 +90,27 @@ public class AgentBrain {
                 return new AgentResponse("Can you clarify what you mean?", false);
         }
 
-        // -------------------------------------------------
-        // 2️⃣ STATE MACHINE
-        // -------------------------------------------------
+        // 2. STATE MACHINE
         String stateReply = stateMachine.handle(input, context);
         if (stateReply != null) {
             return new AgentResponse(stateReply, false);
         }
 
-        // -------------------------------------------------
-        // 3️⃣ IDENTITY PERCEPTION (extract user name + interests)
-        // -------------------------------------------------
+        // 3. IDENTITY PERCEPTION (extract user name + interests)
         identityPerceptionEngine.perceive(input);
 
-        // -------------------------------------------------
-        // 4️⃣ MEMORY RECALL
-        // -------------------------------------------------
+        // 3b. KNOWLEDGE GRAPH EXTRACTION
+        knowledgeGraph.extractFromInput(input);
+
+        // 4. MEMORY RECALL
         String recalledMemory = memoryFacade.recallAll(input);
         context.setWorkingMemory(recalledMemory);
 
-        // -------------------------------------------------
-        // 5️⃣ INTENT DETECTION
-        // -------------------------------------------------
+        // 5. INTENT DETECTION
         String intent = intentEngine.detectIntent(input);
         context.setLastIntent(intent);
 
-        // -------------------------------------------------
-        // 6️⃣ HANDLE LESSON NAVIGATION INTENTS
-        // LessonEngine uses the session's LessonState for per-session isolation.
-        // -------------------------------------------------
+        // 6. HANDLE LESSON NAVIGATION INTENTS
         switch (intent) {
             case "LEARN": {
                 String topic = input.replaceFirst("(?i)learn\\s+", "").trim();
@@ -147,9 +143,7 @@ public class AgentBrain {
             }
         }
 
-        // -------------------------------------------------
-        // 7️⃣ SKILL ROUTING
-        // -------------------------------------------------
+        // 7. SKILL ROUTING
         Skill skill = router.route(intent);
         String rawReply;
 
@@ -158,21 +152,21 @@ public class AgentBrain {
         } else {
             boolean isLearningIntent = isLearningIntent(intent);
             String instruction = buildInstruction(intent, isLearningIntent, lessonState);
-            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent);
+            List<String> graphFacts = knowledgeGraph.getContextFacts(input);
+            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts);
             rawReply = ollamaClient.generateDirect(fullPrompt);
         }
 
-        // -------------------------------------------------
-        // 8️⃣ META COGNITION
-        // -------------------------------------------------
+        // 8. META COGNITION
         MetaThought reflection = meta.evaluate(input, rawReply);
         if (!reflection.isSuccessful()) {
             rawReply += "\n\n(Self-correction applied)";
         }
 
-        // -------------------------------------------------
-        // 9️⃣ PERSONALITY RENDER
-        // -------------------------------------------------
+        // 9. POST-PROCESSING: Strip placeholders and fake content
+        rawReply = stripPlaceholders(rawReply);
+
+        // 10. PERSONALITY RENDER
         String finalReply = personality.applyPersonality(rawReply);
 
         return new AgentResponse(finalReply, false);
@@ -201,5 +195,25 @@ public class AgentBrain {
                     + ". Use a teaching tone.";
         }
         return "Respond naturally and helpfully.";
+    }
+
+    /**
+     * Strip placeholder text that the LLM sometimes generates.
+     */
+    private String stripPlaceholders(String reply) {
+        if (reply == null) return reply;
+        reply = reply.replaceAll("(?i)\\[insert[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[add[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[your[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[link[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[placeholder[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[TODO[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[TBD[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)\\[fill[^\\]]*\\]", "");
+        reply = reply.replaceAll("(?i)Click here to learn more\\.", "");
+        reply = reply.replaceAll("(?i)Learn more at \\[.*?\\]\\.", "");
+        reply = reply.replaceAll("(?i)\\(insert link\\)", "");
+        reply = reply.replaceAll("\\n{3,}", "\n\n");
+        return reply.trim();
     }
 }

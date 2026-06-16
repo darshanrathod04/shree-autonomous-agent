@@ -1,0 +1,27 @@
+{
+  "relationships" : [ {
+    "id" : "9d820788-3969-4908-a979-6ce9a9f559a1",
+    "sourceId" : "893b3ee1-9329-445f-9346-8c071f0822f6",
+    "targetId" : "162b2a71-5b8f-4e0f-8b4c-8264159275c8",
+    "type" : "LEARNING",
+    "properties" : { },
+    "createdAt" : 1781630610.587287700
+  } ],
+  "entities" : [ {
+    "id" : "162b2a71-5b8f-4e0f-8b4c-8264159275c8",
+    "type" : "LEARNING_TOPIC",
+    "name" : "Java",
+    "description" : null,
+    "properties" : { },
+    "createdAt" : 1781630610.586286600,
+    "updatedAt" : 1781630610.586286600
+  }, {
+    "id" : "893b3ee1-9329-445f-9346-8c071f0822f6",
+    "type" : "USER",
+    "name" : "Darshan",
+    "description" : "Primary user",
+    "properties" : { },
+    "createdAt" : 1781630610.584286900,
+    "updatedAt" : 1781630610.584286900
+  } ]
+}

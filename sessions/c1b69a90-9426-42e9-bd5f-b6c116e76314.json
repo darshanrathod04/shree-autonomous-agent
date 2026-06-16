@@ -1,0 +1,40 @@
+{
+  "sessionId" : "c1b69a90-9426-42e9-bd5f-b6c116e76314",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781630492.949310800,
+  "lastAccessedAt" : 1781630504.067378200,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "test message",
+    "timestamp" : 1781630492.950690100,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello! I'm glad to see you reaching out for guidance on your path to learning more about AI or programming, but it seems like we might be misunderstanding each other a bit here. Could you please share with me what specific topic within these fields interests you? Once I know that, I can give tailored advice and resources using markdown formatting for easy reading! Take your time.",
+    "timestamp" : 1781630504.067378200,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: test message\nAI: \uD83D\uDE0A Hello! I'm glad to see you reaching out for gui...\n",
+  "expired" : false,
+  "firstMessage" : "test message"
+}

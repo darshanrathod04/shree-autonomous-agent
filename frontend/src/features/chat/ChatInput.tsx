@@ -8,8 +8,9 @@ export function ChatInput() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { addMessage, isStreaming, startStreaming, updateStreaming, finishStreaming } = useChatStore();
+  const { addMessage, getIsStreaming, startStreaming, updateStreaming, finishStreaming } = useChatStore();
   const { activeSessionId, setActiveSession } = useSessionStore();
+  const isStreaming = getIsStreaming();
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -37,7 +38,6 @@ export function ChatInput() {
     startStreaming();
 
     try {
-      // Use fetch directly for streaming-like experience
       const response = await chatApi.send({
         message: trimmed,
         sessionId: activeSessionId,

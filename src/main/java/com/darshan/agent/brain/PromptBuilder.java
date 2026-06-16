@@ -11,10 +11,8 @@ import com.darshan.agent.memory.semantic.SemanticMemoryEngine;
 import com.darshan.agent.self.SelfModelEngine;
 import org.springframework.stereotype.Component;
 
-/**
- * Single source of prompt creation.
- * Builds rich prompts from profile, goals, semantic memory, current lesson, and conversation summary.
- */
+import java.util.List;
+
 @Component
 public class PromptBuilder {
 
@@ -41,14 +39,11 @@ public class PromptBuilder {
     }
 
     /**
-     * Build a comprehensive prompt with all available context.
-     * The user's current message MUST dominate the prompt.
-     * @param isLearningIntent If true, include lesson context; otherwise exclude it.
+     * Build a comprehensive prompt with all available context including knowledge graph facts.
      */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent) {
+    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent, List<String> graphFacts) {
         StringBuilder prompt = new StringBuilder();
 
-        // System identity - concise, focused prompt
         prompt.append("""
                 You are Shree, a personal AI tutor and assistant created by Darshan.
 
@@ -58,22 +53,24 @@ public class PromptBuilder {
                 - Use markdown formatting for readability
                 - Be warm, encouraging, and educational
                 - Keep responses focused on the user's question
+                - NEVER fabricate memory claims. Only reference information explicitly provided in the PAST EXPERIENCES or KNOWN FACTS sections below.
+                - If no PAST EXPERIENCES section is provided, do NOT say things like "as you mentioned before", "from our previous discussion", or "you already learned".
+                - NEVER claim to remember things that are not in the provided context.
+                - For roadmaps, learning plans, or structured content: provide specific topic names, project ideas, and concrete resources. Never use placeholder text like "[Insert links here]", "[Add resource]", or generic templates.
+                - Every roadmap must include: specific level names, concrete topics, real project ideas, named resources, and measurable milestones.
 
                 """);
 
-        // User profile - only if relevant
         String profileContext = buildProfileContext();
         if (!profileContext.isEmpty()) {
             prompt.append("USER PROFILE:\n").append(profileContext).append("\n");
         }
 
-        // Active goal context - only if relevant to current question
         String goalContext = buildGoalContext();
         if (!goalContext.isEmpty()) {
             prompt.append("ACTIVE GOAL:\n").append(goalContext).append("\n");
         }
 
-        // Current lesson context - ONLY if learning intent is detected
         if (isLearningIntent) {
             String lessonContext = buildLessonContext();
             if (!lessonContext.isEmpty()) {
@@ -81,18 +78,22 @@ public class PromptBuilder {
             }
         }
 
-        // Memory from past interactions - limit to most relevant
         String memory = context.getWorkingMemory();
         if (memory != null && !memory.isEmpty()) {
-            // Truncate memory to prevent prompt bloat
             String truncatedMemory = memory.length() > 500 ? memory.substring(0, 500) + "..." : memory;
             prompt.append("PAST EXPERIENCES:\n").append(truncatedMemory).append("\n");
         }
 
-        // Conversation history - limit to last 3 exchanges
+        if (graphFacts != null && !graphFacts.isEmpty()) {
+            prompt.append("KNOWN FACTS:\n");
+            for (String fact : graphFacts) {
+                prompt.append("- ").append(fact).append("\n");
+            }
+            prompt.append("\n");
+        }
+
         String history = context.getConversationSummary();
         if (history != null && !history.isEmpty()) {
-            // Only include last 3 lines of conversation history
             String[] lines = history.split("\n");
             int start = Math.max(0, lines.length - 6);
             StringBuilder recentHistory = new StringBuilder();
@@ -102,27 +103,23 @@ public class PromptBuilder {
             prompt.append("RECENT CONVERSATION:\n").append(recentHistory).append("\n");
         }
 
-        // Executive instruction
         if (instruction != null && !instruction.isEmpty()) {
             prompt.append("INSTRUCTION: ").append(instruction).append("\n");
         }
 
-        // Current input - MUST be last and prominent
         prompt.append("USER: ").append(input).append("\n");
 
         return prompt.toString();
     }
 
-    /**
-     * Overloaded method for backward compatibility (no learning intent = exclude lesson context).
-     */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
-        return buildFullPrompt(input, instruction, context, false);
+    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, null);
     }
 
-    /**
-     * Build profile context string.
-     */
+    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
+        return buildFullPrompt(input, instruction, context, false, null);
+    }
+
     public String buildProfileContext() {
         StringBuilder sb = new StringBuilder();
         if (userProfile.getName() != null && !userProfile.getName().isBlank()) {
@@ -139,9 +136,6 @@ public class PromptBuilder {
         return sb.toString();
     }
 
-    /**
-     * Build goal context string.
-     */
     public String buildGoalContext() {
         if (!goalManager.hasGoal()) return "";
         AgentGoal goal = goalManager.getGoal();
@@ -160,16 +154,10 @@ public class PromptBuilder {
         return sb.toString();
     }
 
-    /**
-     * Build lesson context string (no lesson state = return empty).
-     */
     public String buildLessonContext() {
         return "";
     }
 
-    /**
-     * Build lesson context string from a session-specific LessonState.
-     */
     public String buildLessonContext(LessonState lessonState) {
         if (lessonState == null || !lessonState.hasActiveLesson()) return "";
         return lessonState.buildProgressSummary();
