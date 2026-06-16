@@ -1,19 +1,18 @@
- package com.darshan.agent.brain;
+package com.darshan.agent.brain;
 
 import com.darshan.agent.autonomy.AgentGoal;
 import com.darshan.agent.autonomy.GoalManager;
 import com.darshan.agent.context.ConversationManager;
 import com.darshan.agent.context.ConversationContext;
+import com.darshan.agent.context.LessonState;
 import com.darshan.agent.memory.MemoryFacade;
 import com.darshan.agent.memory.UserProfile;
 import com.darshan.agent.memory.semantic.SemanticMemoryEngine;
 import com.darshan.agent.self.SelfModelEngine;
 import org.springframework.stereotype.Component;
 
-/**
- * Single source of prompt creation.
- * Builds rich prompts from profile, goals, semantic memory, current lesson, and conversation summary.
- */
+import java.util.List;
+
 @Component
 public class PromptBuilder {
 
@@ -41,13 +40,11 @@ public class PromptBuilder {
 
     /**
      * Build a comprehensive prompt with all available context.
-     * The user's current message MUST dominate the prompt.
-     * @param isLearningIntent If true, include lesson context; otherwise exclude it.
      */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent) {
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts, List<String> projectFacts) {
         StringBuilder prompt = new StringBuilder();
 
-        // System identity - concise, focused prompt
         prompt.append("""
                 You are Shree, a personal AI tutor and assistant created by Darshan.
 
@@ -57,22 +54,21 @@ public class PromptBuilder {
                 - Use markdown formatting for readability
                 - Be warm, encouraging, and educational
                 - Keep responses focused on the user's question
+                - NEVER fabricate memory claims. Only reference information explicitly provided below.
+                - For roadmaps, learning plans, or structured content: provide specific topic names, project ideas, and concrete resources.
 
                 """);
 
-        // User profile - only if relevant
         String profileContext = buildProfileContext();
         if (!profileContext.isEmpty()) {
             prompt.append("USER PROFILE:\n").append(profileContext).append("\n");
         }
 
-        // Active goal context - only if relevant to current question
         String goalContext = buildGoalContext();
         if (!goalContext.isEmpty()) {
             prompt.append("ACTIVE GOAL:\n").append(goalContext).append("\n");
         }
 
-        // Current lesson context - ONLY if learning intent is detected
         if (isLearningIntent) {
             String lessonContext = buildLessonContext();
             if (!lessonContext.isEmpty()) {
@@ -80,18 +76,30 @@ public class PromptBuilder {
             }
         }
 
-        // Memory from past interactions - limit to most relevant
         String memory = context.getWorkingMemory();
         if (memory != null && !memory.isEmpty()) {
-            // Truncate memory to prevent prompt bloat
             String truncatedMemory = memory.length() > 500 ? memory.substring(0, 500) + "..." : memory;
             prompt.append("PAST EXPERIENCES:\n").append(truncatedMemory).append("\n");
         }
 
-        // Conversation history - limit to last 3 exchanges
+        if (graphFacts != null && !graphFacts.isEmpty()) {
+            prompt.append("KNOWN FACTS:\n");
+            for (String fact : graphFacts) {
+                prompt.append("- ").append(fact).append("\n");
+            }
+            prompt.append("\n");
+        }
+
+        if (projectFacts != null && !projectFacts.isEmpty()) {
+            prompt.append("PROJECT STATUS:\n");
+            for (String fact : projectFacts) {
+                prompt.append("- ").append(fact).append("\n");
+            }
+            prompt.append("\n");
+        }
+
         String history = context.getConversationSummary();
         if (history != null && !history.isEmpty()) {
-            // Only include last 3 lines of conversation history
             String[] lines = history.split("\n");
             int start = Math.max(0, lines.length - 6);
             StringBuilder recentHistory = new StringBuilder();
@@ -101,27 +109,29 @@ public class PromptBuilder {
             prompt.append("RECENT CONVERSATION:\n").append(recentHistory).append("\n");
         }
 
-        // Executive instruction
         if (instruction != null && !instruction.isEmpty()) {
             prompt.append("INSTRUCTION: ").append(instruction).append("\n");
         }
 
-        // Current input - MUST be last and prominent
         prompt.append("USER: ").append(input).append("\n");
 
         return prompt.toString();
     }
 
-    /**
-     * Overloaded method for backward compatibility (no learning intent = exclude lesson context).
-     */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
-        return buildFullPrompt(input, instruction, context, false);
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, null);
     }
 
-    /**
-     * Build profile context string.
-     */
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, null, null);
+    }
+
+    public String buildFullPrompt(String input, String instruction, ConversationContext context) {
+        return buildFullPrompt(input, instruction, context, false, null, null);
+    }
+
     public String buildProfileContext() {
         StringBuilder sb = new StringBuilder();
         if (userProfile.getName() != null && !userProfile.getName().isBlank()) {
@@ -138,9 +148,6 @@ public class PromptBuilder {
         return sb.toString();
     }
 
-    /**
-     * Build goal context string.
-     */
     public String buildGoalContext() {
         if (!goalManager.hasGoal()) return "";
         AgentGoal goal = goalManager.getGoal();
@@ -159,11 +166,12 @@ public class PromptBuilder {
         return sb.toString();
     }
 
-    /**
-     * Build lesson context string.
-     */
     public String buildLessonContext() {
-        if (!conversationManager.hasActiveLesson()) return "";
-        return conversationManager.buildProgressSummary();
+        return "";
+    }
+
+    public String buildLessonContext(LessonState lessonState) {
+        if (lessonState == null || !lessonState.hasActiveLesson()) return "";
+        return lessonState.buildProgressSummary();
     }
 }

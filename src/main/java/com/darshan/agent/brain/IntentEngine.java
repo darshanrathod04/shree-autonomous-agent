@@ -71,6 +71,14 @@ public class IntentEngine {
         if (text.contains("hello") || text.contains("hi") || text.contains("hey"))
             return "GREETING";
 
+        // Time
+        if (text.contains("what time") || text.contains("current time")
+                || text.contains("what's the time") || text.equals("time")
+                || text.contains("what is the time") || text.contains("tell me the time")
+                || text.contains("kitne baje") || text.contains("time kya hai")) {
+            return "TIME";
+        }
+
         // Weather
         if (text.contains("weather"))
             return "WEATHER";

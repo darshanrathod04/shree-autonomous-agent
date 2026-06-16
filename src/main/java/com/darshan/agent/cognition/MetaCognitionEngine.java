@@ -1,4 +1,4 @@
-package com.darshan.agent.cognition;
+ package com.darshan.agent.cognition;
 
 import org.springframework.stereotype.Component;
 
@@ -11,11 +11,13 @@ public class MetaCognitionEngine {
     public MetaThought evaluate(String userInput,
                                 String agentResponse) {
 
-        if (agentResponse.length() < 25) {
+        // Short responses are not necessarily failures - greetings, confirmations,
+        // and quick answers are valid. Only flag truly empty or error responses.
+        if (agentResponse == null || agentResponse.isBlank()) {
             lastThought = new MetaThought(
                     false,
-                    "Answer too short",
-                    "Provide deeper explanation"
+                    "Empty response",
+                    "Provide a meaningful answer"
             );
         } else {
             lastThought = new MetaThought(

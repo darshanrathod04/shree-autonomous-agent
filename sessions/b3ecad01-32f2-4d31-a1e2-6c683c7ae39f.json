@@ -1,0 +1,50 @@
+{
+  "sessionId" : "b3ecad01-32f2-4d31-a1e2-6c683c7ae39f",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781547374.275503500,
+  "lastAccessedAt" : 1781547414.091463100,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hey bro whatsup",
+    "timestamp" : 1781547374.288409300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.",
+    "timestamp" : 1781547374.297656900,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "who are you",
+    "timestamp" : 1781547407.064422200,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello there! I am **Shree**, a personal AI tutor designed to assist with learning and understanding various subjects. My purpose is to provide warmth and encouragement as we explore topics together in an educational journey filled with knowledge discovery. How can I help guide your path today? Take your time.",
+    "timestamp" : 1781547414.091463100,
+    "intent" : null
+  } ],
+  "summary" : "USER: hey bro whatsup\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied)...\nUSER: who are you\nAI: \uD83D\uDE0A Hello there! I am **Shree**, a personal AI tuto...\n",
+  "messageCount" : 4,
+  "firstMessage" : "hey bro whatsup",
+  "expired" : false
+}

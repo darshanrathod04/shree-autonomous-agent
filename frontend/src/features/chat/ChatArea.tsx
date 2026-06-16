@@ -12,21 +12,23 @@ interface ChatAreaProps {
 }
 
 export function ChatArea({ sessionId }: ChatAreaProps) {
-  const { messages, isStreaming, streamingContent, setMessages } = useChatStore();
+  const { setActiveSession, getMessages, getIsStreaming, getStreamingContent, setMessages } = useChatStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const loadedSessionRef = useRef<string | null>(null);
+
+  // Sync active session ID with chatStore
+  useEffect(() => {
+    setActiveSession(sessionId);
+  }, [sessionId, setActiveSession]);
 
   // Load messages when session changes
   useEffect(() => {
     if (!sessionId) {
-      setMessages([]);
       loadedSessionRef.current = null;
       return;
     }
 
     // Skip reload if we already loaded this session's messages
-    // This prevents duplication when ChatInput adds a message locally
-    // and then this effect tries to load the same messages from the server
     if (loadedSessionRef.current === sessionId) {
       return;
     }
@@ -52,6 +54,10 @@ export function ChatArea({ sessionId }: ChatAreaProps) {
   }, [sessionId, setMessages]);
 
   // Auto-scroll to bottom when new messages arrive or during streaming
+  const messages = getMessages();
+  const streamingContent = getStreamingContent();
+  const isStreaming = getIsStreaming();
+
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });

@@ -11,6 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Engine for managing lesson content and progress.
+ * Lesson state is now per-session via LessonState parameter,
+ * enabling independent lessons across different sessions.
+ */
 @Component
 public class LessonEngine {
 
@@ -20,11 +25,21 @@ public class LessonEngine {
             .registerModule(new JavaTimeModule())
             .enable(SerializationFeature.INDENT_OUTPUT);
 
-    private final ConversationManager conversationManager;
+    // Global lesson templates - these are static content definitions, NOT session state
     private final Map<String, List<String>> lessonChapters = new LinkedHashMap<>();
     private final Map<String, Integer> lessonProgress = new HashMap<>();
 
-    public LessonEngine(@org.springframework.beans.factory.annotation.Qualifier("lessonConversationManager") ConversationManager conversationManager) {
+    // Shared fallback LessonState for backward-compatible no-arg method calls.
+    // Tests and legacy code use these overloads. New code should pass a session-specific LessonState.
+    private final LessonState fallbackLessonState = new LessonState();
+    
+    // Global conversation manager for backward compatibility.
+    // When backward-compatible no-arg methods are called, they sync state to this manager
+    // so that IntentEngine etc. can detect the active lesson.
+    private final com.darshan.agent.context.ConversationManager conversationManager;
+
+    public LessonEngine(@org.springframework.beans.factory.annotation.Qualifier("lessonConversationManager") 
+                        com.darshan.agent.context.ConversationManager conversationManager) {
         this.conversationManager = conversationManager;
     }
 
@@ -36,13 +51,16 @@ public class LessonEngine {
     // ==================== LESSON MANAGEMENT ====================
 
     /**
-     * Start a new lesson on a topic.
+     * Start a new lesson on a topic for a specific session's LessonState.
      */
-    public String startLesson(String topic) {
+    public String startLesson(String topic, LessonState lessonState) {
+        if (lessonState == null) {
+            lessonState = new LessonState();
+        }
         String topicLower = topic.toLowerCase();
-        conversationManager.setActiveTopic(topic);
-        conversationManager.setLessonName(topic);
-        conversationManager.setChapterNumber(1);
+        lessonState.setActiveTopic(topic);
+        lessonState.setLessonName(topic);
+        lessonState.setChapterNumber(1);
 
         // Load or create lesson plan
         if (!lessonChapters.containsKey(topicLower)) {
@@ -51,7 +69,6 @@ public class LessonEngine {
             lessonProgress.put(topicLower, 0);
         }
 
-        conversationManager.save();
         save();
 
         List<String> chapters = lessonChapters.get(topicLower);
@@ -63,15 +80,86 @@ public class LessonEngine {
     }
 
     /**
-     * Go to next chapter.
+     * @deprecated Use {@link #startLesson(String, LessonState)} instead.
+     * This method uses a shared fallback LessonState and syncs to global state.
+     * It exists only for backward compatibility. New code should pass session.getLessonState().
      */
+    @Deprecated
+    public String startLesson(String topic) {
+        System.err.println("[WARN] ⚠️ LessonEngine.startLesson(String) deprecated - use startLesson(String, LessonState) with session.getLessonState()");
+        String result = startLesson(topic, fallbackLessonState);
+        syncGlobalLessonState();
+        return result;
+    }
+
+    /**
+     * @deprecated Use {@link #nextChapter(LessonState)} instead.
+     */
+    @Deprecated
     public String nextChapter() {
-        String topic = conversationManager.getLessonName();
+        System.err.println("[WARN] ⚠️ LessonEngine.nextChapter() deprecated - use nextChapter(LessonState) with session.getLessonState()");
+        String result = nextChapter(fallbackLessonState);
+        syncGlobalLessonState();
+        return result;
+    }
+
+    /**
+     * @deprecated Use {@link #previousChapter(LessonState)} instead.
+     */
+    @Deprecated
+    public String previousChapter() {
+        System.err.println("[WARN] ⚠️ LessonEngine.previousChapter() deprecated - use previousChapter(LessonState) with session.getLessonState()");
+        String result = previousChapter(fallbackLessonState);
+        syncGlobalLessonState();
+        return result;
+    }
+
+    /**
+     * @deprecated Use {@link #getSummary(LessonState)} instead.
+     */
+    @Deprecated
+    public String getSummary() {
+        System.err.println("[WARN] ⚠️ LessonEngine.getSummary() deprecated - use getSummary(LessonState) with session.getLessonState()");
+        return getSummary(fallbackLessonState);
+    }
+
+    /**
+     * @deprecated Use {@link #quizMode(LessonState)} instead.
+     */
+    @Deprecated
+    public String quizMode() {
+        System.err.println("[WARN] ⚠️ LessonEngine.quizMode() deprecated - use quizMode(LessonState) with session.getLessonState()");
+        return quizMode(fallbackLessonState);
+    }
+
+    /**
+     * Syncs the fallback LessonState to the global conversationManager.
+     * Only called by deprecated backward-compatible methods.
+     */
+    @Deprecated
+    private void syncGlobalLessonState() {
+        if (conversationManager != null) {
+            if (fallbackLessonState.hasActiveLesson()) {
+                conversationManager.setActiveTopic(fallbackLessonState.getActiveTopic() != null 
+                    ? fallbackLessonState.getActiveTopic() : fallbackLessonState.getLessonName());
+                conversationManager.setLessonName(fallbackLessonState.getLessonName());
+                conversationManager.setChapterNumber(fallbackLessonState.getChapterNumber());
+                conversationManager.setCurrentObjective(fallbackLessonState.getCurrentObjective());
+                conversationManager.save();
+            }
+        }
+    }
+
+    /**
+     * Go to next chapter using session-specific LessonState.
+     */
+    public String nextChapter(LessonState lessonState) {
+        String topic = lessonState.getLessonName();
         if (topic == null) {
             return "No active lesson. Say 'learn <topic>' to start one.";
         }
 
-        int currentChapter = conversationManager.getChapterNumber();
+        int currentChapter = lessonState.getChapterNumber();
         List<String> chapters = lessonChapters.get(topic.toLowerCase());
 
         if (chapters == null || currentChapter >= chapters.size()) {
@@ -80,17 +168,16 @@ public class LessonEngine {
         }
 
         // Mark previous as completed
-        conversationManager.addCompletedChapter("Ch." + currentChapter + ": " + chapters.get(currentChapter - 1));
+        lessonState.addCompletedChapter("Ch." + currentChapter + ": " + chapters.get(currentChapter - 1));
 
         // Move to next
         currentChapter++;
-        conversationManager.setChapterNumber(currentChapter);
+        lessonState.setChapterNumber(currentChapter);
 
         String chapterTitle = chapters.get(currentChapter - 1);
-        conversationManager.setCurrentObjective("Teach chapter " + currentChapter + ": " + chapterTitle);
+        lessonState.setCurrentObjective("Teach chapter " + currentChapter + ": " + chapterTitle);
 
         lessonProgress.put(topic.toLowerCase(), currentChapter - 1);
-        conversationManager.save();
         save();
 
         StringBuilder sb = new StringBuilder();
@@ -102,45 +189,44 @@ public class LessonEngine {
     }
 
     /**
-     * Go to previous chapter.
+     * Go to previous chapter using session-specific LessonState.
      */
-    public String previousChapter() {
-        String topic = conversationManager.getLessonName();
+    public String previousChapter(LessonState lessonState) {
+        String topic = lessonState.getLessonName();
         if (topic == null) {
             return "No active lesson to go back to.";
         }
 
-        int currentChapter = conversationManager.getChapterNumber();
+        int currentChapter = lessonState.getChapterNumber();
         if (currentChapter <= 1) {
             return "You're already at the first chapter.";
         }
 
         currentChapter--;
-        conversationManager.setChapterNumber(currentChapter);
+        lessonState.setChapterNumber(currentChapter);
 
         List<String> chapters = lessonChapters.get(topic.toLowerCase());
         String chapterTitle = chapters != null && currentChapter <= chapters.size()
                 ? chapters.get(currentChapter - 1) : "Topic " + currentChapter;
 
-        conversationManager.save();
         save();
 
         return "📘 Going back to Chapter " + currentChapter + ": " + chapterTitle;
     }
 
     /**
-     * Get lesson summary.
+     * Get lesson summary using session-specific LessonState.
      */
-    public String getSummary() {
-        String topic = conversationManager.getLessonName();
+    public String getSummary(LessonState lessonState) {
+        String topic = lessonState.getLessonName();
         if (topic == null) {
             return "No active lesson.";
         }
 
-        int current = conversationManager.getChapterNumber();
+        int current = lessonState.getChapterNumber();
         List<String> chapters = lessonChapters.get(topic.toLowerCase());
         int total = chapters != null ? chapters.size() : 0;
-        List<String> completed = conversationManager.getCompletedChapters();
+        List<String> completed = lessonState.getCompletedChapters();
 
         StringBuilder sb = new StringBuilder();
         sb.append("📋 Lesson Summary: ").append(topic).append("\n");
@@ -160,15 +246,15 @@ public class LessonEngine {
     }
 
     /**
-     * Generate quiz questions for the current topic.
+     * Generate quiz questions for the current session's active lesson.
      */
-    public String quizMode() {
-        String topic = conversationManager.getLessonName();
+    public String quizMode(LessonState lessonState) {
+        String topic = lessonState.getLessonName();
         if (topic == null) {
             return "No active lesson to quiz on. Say 'learn <topic>' first.";
         }
 
-        int completed = conversationManager.getCompletedChapters().size();
+        int completed = lessonState.getCompletedChapters().size();
 
         if (completed == 0) {
             return "You haven't completed any chapters yet. Start learning first!";
