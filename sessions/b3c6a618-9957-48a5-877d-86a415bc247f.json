@@ -1,0 +1,40 @@
+{
+  "sessionId" : "b3c6a618-9957-48a5-877d-86a415bc247f",
+  "userId" : "user1",
+  "context" : {
+    "lastIntent" : "GREETING",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781631914.404716500,
+  "lastAccessedAt" : 1781631914.411615400,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "Hello from Session A",
+    "timestamp" : 1781631914.408002200,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.",
+    "timestamp" : 1781631914.411615400,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: Hello from Session A\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.\n",
+  "firstMessage" : "Hello from Session A",
+  "expired" : false
+}

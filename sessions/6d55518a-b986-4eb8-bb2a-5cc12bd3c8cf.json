@@ -1,0 +1,40 @@
+{
+  "sessionId" : "6d55518a-b986-4eb8-bb2a-5cc12bd3c8cf",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : null,
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : null,
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781631914.474597600,
+  "lastAccessedAt" : 1781631914.478061500,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "goal: Learn DSA",
+    "timestamp" : 1781631914.476653200,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "Goal accepted. Shree is now working autonomously.",
+    "timestamp" : 1781631914.478061500,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: goal: Learn DSA\nAI: Goal accepted. Shree is now working autonomously.\n",
+  "firstMessage" : "goal: Learn DSA",
+  "expired" : false
+}

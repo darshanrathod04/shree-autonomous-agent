@@ -1,0 +1,40 @@
+{
+  "sessionId" : "cb0d0f46-5c93-49db-97df-ae379111b705",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "Past experiences:\nRelevant past experiences:\n- User: My name is Darshan\n  Outcome: Stored identity: Darshan\n- User: My name is Darshan\n  Outcome: Stored identity: Darshan",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781632043.356013100,
+  "lastAccessedAt" : 1781632043.363452600,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "My name is Darshan",
+    "timestamp" : 1781632043.358038300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take your time.",
+    "timestamp" : 1781632043.363452600,
+    "intent" : null
+  } ],
+  "expired" : false,
+  "summary" : "USER: My name is Darshan\nAI: \uD83D\uDE0A Your name is Darshan. I remember you. \uD83E\uDDE0 Take y...\n",
+  "messageCount" : 2,
+  "firstMessage" : "My name is Darshan"
+}

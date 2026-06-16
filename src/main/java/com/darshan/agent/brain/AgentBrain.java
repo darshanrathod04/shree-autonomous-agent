@@ -10,6 +10,7 @@ import com.darshan.agent.dto.AgentResponse;
 import com.darshan.agent.graph.KnowledgeGraphEngine;
 import com.darshan.agent.llm.OllamaClient;
 import com.darshan.agent.memory.MemoryFacade;
+import com.darshan.agent.project.ProjectIntelligenceEngine;
 import com.darshan.agent.personality.PersonalityEngine;
 import com.darshan.agent.router.SkillRouter;
 import com.darshan.agent.skills.Skill;
@@ -33,6 +34,7 @@ public class AgentBrain {
     private final PromptBuilder promptBuilder;
     private final OllamaClient ollamaClient;
     private final KnowledgeGraphEngine knowledgeGraph;
+    private final ProjectIntelligenceEngine projectIntelligence;
 
     public AgentBrain(
             CognitiveGovernorEngine governor,
@@ -47,7 +49,8 @@ public class AgentBrain {
             LessonEngine lessonEngine,
             PromptBuilder promptBuilder,
             OllamaClient ollamaClient,
-            KnowledgeGraphEngine knowledgeGraph
+            KnowledgeGraphEngine knowledgeGraph,
+            ProjectIntelligenceEngine projectIntelligence
     ) {
         this.governor = governor;
         this.stateMachine = stateMachine;
@@ -62,6 +65,7 @@ public class AgentBrain {
         this.promptBuilder = promptBuilder;
         this.ollamaClient = ollamaClient;
         this.knowledgeGraph = knowledgeGraph;
+        this.projectIntelligence = projectIntelligence;
     }
 
     // =====================================================
@@ -101,6 +105,9 @@ public class AgentBrain {
 
         // 3b. KNOWLEDGE GRAPH EXTRACTION
         knowledgeGraph.extractFromInput(input);
+
+        // 3c. PROJECT INTELLIGENCE EXTRACTION
+        projectIntelligence.extractFromInput(input);
 
         // 4. MEMORY RECALL
         String recalledMemory = memoryFacade.recallAll(input);
@@ -153,7 +160,8 @@ public class AgentBrain {
             boolean isLearningIntent = isLearningIntent(intent);
             String instruction = buildInstruction(intent, isLearningIntent, lessonState);
             List<String> graphFacts = knowledgeGraph.getContextFacts(input);
-            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts);
+            List<String> projectFacts = projectIntelligence.getContextFacts(input);
+            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts);
             rawReply = ollamaClient.generateDirect(fullPrompt);
         }
 

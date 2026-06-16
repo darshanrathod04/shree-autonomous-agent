@@ -39,9 +39,10 @@ public class PromptBuilder {
     }
 
     /**
-     * Build a comprehensive prompt with all available context including knowledge graph facts.
+     * Build a comprehensive prompt with all available context.
      */
-    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent, List<String> graphFacts) {
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts, List<String> projectFacts) {
         StringBuilder prompt = new StringBuilder();
 
         prompt.append("""
@@ -53,11 +54,8 @@ public class PromptBuilder {
                 - Use markdown formatting for readability
                 - Be warm, encouraging, and educational
                 - Keep responses focused on the user's question
-                - NEVER fabricate memory claims. Only reference information explicitly provided in the PAST EXPERIENCES or KNOWN FACTS sections below.
-                - If no PAST EXPERIENCES section is provided, do NOT say things like "as you mentioned before", "from our previous discussion", or "you already learned".
-                - NEVER claim to remember things that are not in the provided context.
-                - For roadmaps, learning plans, or structured content: provide specific topic names, project ideas, and concrete resources. Never use placeholder text like "[Insert links here]", "[Add resource]", or generic templates.
-                - Every roadmap must include: specific level names, concrete topics, real project ideas, named resources, and measurable milestones.
+                - NEVER fabricate memory claims. Only reference information explicitly provided below.
+                - For roadmaps, learning plans, or structured content: provide specific topic names, project ideas, and concrete resources.
 
                 """);
 
@@ -92,6 +90,14 @@ public class PromptBuilder {
             prompt.append("\n");
         }
 
+        if (projectFacts != null && !projectFacts.isEmpty()) {
+            prompt.append("PROJECT STATUS:\n");
+            for (String fact : projectFacts) {
+                prompt.append("- ").append(fact).append("\n");
+            }
+            prompt.append("\n");
+        }
+
         String history = context.getConversationSummary();
         if (history != null && !history.isEmpty()) {
             String[] lines = history.split("\n");
@@ -112,12 +118,18 @@ public class PromptBuilder {
         return prompt.toString();
     }
 
-    public String buildFullPrompt(String input, String instruction, ConversationContext context, boolean isLearningIntent) {
-        return buildFullPrompt(input, instruction, context, isLearningIntent, null);
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, null);
+    }
+
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, null, null);
     }
 
     public String buildFullPrompt(String input, String instruction, ConversationContext context) {
-        return buildFullPrompt(input, instruction, context, false, null);
+        return buildFullPrompt(input, instruction, context, false, null, null);
     }
 
     public String buildProfileContext() {
