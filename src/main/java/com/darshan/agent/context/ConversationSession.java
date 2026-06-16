@@ -15,6 +15,7 @@ public class ConversationSession {
     private String sessionId;
     private String userId;
     private ConversationContext context;
+    private LessonState lessonState;
     private Instant createdAt;
     private Instant lastAccessedAt;
     private List<SessionMessage> messageHistory;
@@ -28,6 +29,7 @@ public class ConversationSession {
         this.createdAt = Instant.now();
         this.lastAccessedAt = Instant.now();
         this.context = new ConversationContext();
+        this.lessonState = new LessonState();
         this.messageHistory = new ArrayList<>();
     }
     
@@ -116,6 +118,21 @@ public class ConversationSession {
     
     public void setContext(ConversationContext context) {
         this.context = context;
+    }
+    
+    /**
+     * Get the per-session lesson state.
+     * Each session maintains its own lesson progress independently.
+     */
+    public LessonState getLessonState() {
+        if (lessonState == null) {
+            lessonState = new LessonState();
+        }
+        return lessonState;
+    }
+    
+    public void setLessonState(LessonState lessonState) {
+        this.lessonState = lessonState;
     }
     
     public Instant getCreatedAt() {

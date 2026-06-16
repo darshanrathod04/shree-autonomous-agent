@@ -1,0 +1,40 @@
+{
+  "sessionId" : "9dfd0c01-6645-401b-8cbf-dd61a4698ef5",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781544768.027004500,
+  "lastAccessedAt" : 1781544786.018720300,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "test message",
+    "timestamp" : 1781544768.029420500,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello Darshan! It seems like you might be practicing sending messages or testing our system, but I'm here to assist whenever you have questions on **education** topics. If there's a specific subject or question in mind that aligns with your studies, feel free to share it! Take your time.",
+    "timestamp" : 1781544786.018720300,
+    "intent" : null
+  } ],
+  "summary" : "USER: test message\nAI: \uD83D\uDE0A Hello Darshan! It seems like you might be pract...\n",
+  "messageCount" : 2,
+  "expired" : false,
+  "firstMessage" : "test message"
+}

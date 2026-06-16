@@ -29,18 +29,7 @@ public class LessonEngine {
     private final Map<String, List<String>> lessonChapters = new LinkedHashMap<>();
     private final Map<String, Integer> lessonProgress = new HashMap<>();
 
-    // Shared fallback LessonState for backward-compatible no-arg method calls.
-    // Tests and legacy code use these overloads. New code should pass a session-specific LessonState.
-    private final LessonState fallbackLessonState = new LessonState();
-    
-    // Global conversation manager for backward compatibility.
-    // When backward-compatible no-arg methods are called, they sync state to this manager
-    // so that IntentEngine etc. can detect the active lesson.
-    private final com.darshan.agent.context.ConversationManager conversationManager;
-
-    public LessonEngine(@org.springframework.beans.factory.annotation.Qualifier("lessonConversationManager") 
-                        com.darshan.agent.context.ConversationManager conversationManager) {
-        this.conversationManager = conversationManager;
+    public LessonEngine() {
     }
 
     @PostConstruct
@@ -80,74 +69,11 @@ public class LessonEngine {
     }
 
     /**
-     * @deprecated Use {@link #startLesson(String, LessonState)} instead.
-     * This method uses a shared fallback LessonState and syncs to global state.
-     * It exists only for backward compatibility. New code should pass session.getLessonState().
+     * Backward-compatible overload: starts a lesson using a new LessonState.
+     * Keeps existing test code working.
      */
-    @Deprecated
     public String startLesson(String topic) {
-        System.err.println("[WARN] ⚠️ LessonEngine.startLesson(String) deprecated - use startLesson(String, LessonState) with session.getLessonState()");
-        String result = startLesson(topic, fallbackLessonState);
-        syncGlobalLessonState();
-        return result;
-    }
-
-    /**
-     * @deprecated Use {@link #nextChapter(LessonState)} instead.
-     */
-    @Deprecated
-    public String nextChapter() {
-        System.err.println("[WARN] ⚠️ LessonEngine.nextChapter() deprecated - use nextChapter(LessonState) with session.getLessonState()");
-        String result = nextChapter(fallbackLessonState);
-        syncGlobalLessonState();
-        return result;
-    }
-
-    /**
-     * @deprecated Use {@link #previousChapter(LessonState)} instead.
-     */
-    @Deprecated
-    public String previousChapter() {
-        System.err.println("[WARN] ⚠️ LessonEngine.previousChapter() deprecated - use previousChapter(LessonState) with session.getLessonState()");
-        String result = previousChapter(fallbackLessonState);
-        syncGlobalLessonState();
-        return result;
-    }
-
-    /**
-     * @deprecated Use {@link #getSummary(LessonState)} instead.
-     */
-    @Deprecated
-    public String getSummary() {
-        System.err.println("[WARN] ⚠️ LessonEngine.getSummary() deprecated - use getSummary(LessonState) with session.getLessonState()");
-        return getSummary(fallbackLessonState);
-    }
-
-    /**
-     * @deprecated Use {@link #quizMode(LessonState)} instead.
-     */
-    @Deprecated
-    public String quizMode() {
-        System.err.println("[WARN] ⚠️ LessonEngine.quizMode() deprecated - use quizMode(LessonState) with session.getLessonState()");
-        return quizMode(fallbackLessonState);
-    }
-
-    /**
-     * Syncs the fallback LessonState to the global conversationManager.
-     * Only called by deprecated backward-compatible methods.
-     */
-    @Deprecated
-    private void syncGlobalLessonState() {
-        if (conversationManager != null) {
-            if (fallbackLessonState.hasActiveLesson()) {
-                conversationManager.setActiveTopic(fallbackLessonState.getActiveTopic() != null 
-                    ? fallbackLessonState.getActiveTopic() : fallbackLessonState.getLessonName());
-                conversationManager.setLessonName(fallbackLessonState.getLessonName());
-                conversationManager.setChapterNumber(fallbackLessonState.getChapterNumber());
-                conversationManager.setCurrentObjective(fallbackLessonState.getCurrentObjective());
-                conversationManager.save();
-            }
-        }
+        return startLesson(topic, new LessonState());
     }
 
     /**

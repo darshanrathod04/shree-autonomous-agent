@@ -1,9 +1,10 @@
- package com.darshan.agent.brain;
+package com.darshan.agent.brain;
 
 import com.darshan.agent.autonomy.AgentGoal;
 import com.darshan.agent.autonomy.GoalManager;
 import com.darshan.agent.context.ConversationManager;
 import com.darshan.agent.context.ConversationContext;
+import com.darshan.agent.context.LessonState;
 import com.darshan.agent.memory.MemoryFacade;
 import com.darshan.agent.memory.UserProfile;
 import com.darshan.agent.memory.semantic.SemanticMemoryEngine;
@@ -160,10 +161,17 @@ public class PromptBuilder {
     }
 
     /**
-     * Build lesson context string.
+     * Build lesson context string (no lesson state = return empty).
      */
     public String buildLessonContext() {
-        if (!conversationManager.hasActiveLesson()) return "";
-        return conversationManager.buildProgressSummary();
+        return "";
+    }
+
+    /**
+     * Build lesson context string from a session-specific LessonState.
+     */
+    public String buildLessonContext(LessonState lessonState) {
+        if (lessonState == null || !lessonState.hasActiveLesson()) return "";
+        return lessonState.buildProgressSummary();
     }
 }

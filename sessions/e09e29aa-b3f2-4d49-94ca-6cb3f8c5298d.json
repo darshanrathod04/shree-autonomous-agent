@@ -1,0 +1,40 @@
+{
+  "sessionId" : "e09e29aa-b3f2-4d49-94ca-6cb3f8c5298d",
+  "userId" : "user1",
+  "context" : {
+    "lastIntent" : "GREETING",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781544767.810134900,
+  "lastAccessedAt" : 1781544767.814371700,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "Hello from Session B",
+    "timestamp" : 1781544767.812242700,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied) Take your time.",
+    "timestamp" : 1781544767.814371700,
+    "intent" : null
+  } ],
+  "summary" : "USER: Hello from Session B\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree.\n\n(Self-correction applied)...\n",
+  "messageCount" : 2,
+  "expired" : false,
+  "firstMessage" : "Hello from Session B"
+}

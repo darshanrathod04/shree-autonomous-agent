@@ -1,9 +1,9 @@
 package com.darshan.agent.personality;
 
 import com.darshan.agent.autonomy.GoalManager;
-import com.darshan.agent.context.ConversationManager;
 import com.darshan.agent.cognition.MotivationEngine;
 import com.darshan.agent.cognition.MotivationState;
+import com.darshan.agent.context.LessonState;
 import com.darshan.agent.memory.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,10 +16,6 @@ public class PersonalityEngine {
 
     @Autowired
     private GoalManager goalManager;
-
-    @Autowired
-    @org.springframework.beans.factory.annotation.Qualifier("lessonConversationManager")
-    private com.darshan.agent.context.ConversationManager conversationManager;
 
     @Autowired
     private UserProfile userProfile;
@@ -57,13 +53,9 @@ public class PersonalityEngine {
 
     /**
      * Auto-detect personality mode based on current context.
+     * No longer depends on global lesson state - detects from goals and profile only.
      */
     private Mode detectMode() {
-        // Active lesson → TEACHER
-        if (conversationManager.hasActiveLesson()) {
-            return Mode.TEACHER;
-        }
-
         // Active goal → COACH
         if (goalManager.hasGoal()) {
             return Mode.COACH;
@@ -82,6 +74,16 @@ public class PersonalityEngine {
         return Mode.ASSISTANT;
     }
 
+    /**
+     * Get the detected mode. May be overridden by providing an explicit Mode parameter.
+     */
+    public Mode detectMode(LessonState lessonState) {
+        if (lessonState != null && lessonState.hasActiveLesson()) {
+            return Mode.TEACHER;
+        }
+        return detectMode();
+    }
+
     public String mood() {
         MotivationState s = motivationEngine.getState();
         if (s.getFatigue() > 0.7) return "tired but determined";
@@ -97,10 +99,19 @@ public class PersonalityEngine {
         return ExpressionLevel.SUPPORTIVE;
     }
 
+    /**
+     * @deprecated Use detectMode(LessonState) instead.
+     * Returns the last detected mode (may not reflect current session state).
+     */
+    @Deprecated
     public Mode getCurrentMode() {
         return currentMode;
     }
 
+    /**
+     * @deprecated Use detectMode(LessonState) instead.
+     */
+    @Deprecated
     public String getModeName() {
         return currentMode.name();
     }

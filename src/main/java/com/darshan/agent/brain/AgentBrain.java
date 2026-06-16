@@ -3,8 +3,8 @@ package com.darshan.agent.brain;
 import com.darshan.agent.brain.perception.IdentityPerceptionEngine;
 import com.darshan.agent.cognition.*;
 import com.darshan.agent.context.ConversationContext;
-import com.darshan.agent.context.ContextStore;
 import com.darshan.agent.context.LessonEngine;
+import com.darshan.agent.context.LessonState;
 import com.darshan.agent.debate.swarm.DebateSwarmEngine;
 import com.darshan.agent.dto.AgentResponse;
 import com.darshan.agent.llm.OllamaClient;
@@ -19,7 +19,6 @@ public class AgentBrain {
 
     private final CognitiveGovernorEngine governor;
     private final ConversationStateMachine stateMachine;
-    private final ContextStore contextStore;
     private final IntentEngine intentEngine;
     private final SkillRouter router;
     private final DebateSwarmEngine swarm;
@@ -27,7 +26,6 @@ public class AgentBrain {
     private final MemoryFacade memoryFacade;
     private final MetaCognitionEngine meta;
     private final IdentityPerceptionEngine identityPerceptionEngine;
-    private final com.darshan.agent.context.ConversationManager conversationManager;
     private final LessonEngine lessonEngine;
     private final PromptBuilder promptBuilder;
     private final OllamaClient ollamaClient;
@@ -35,7 +33,6 @@ public class AgentBrain {
     public AgentBrain(
             CognitiveGovernorEngine governor,
             ConversationStateMachine stateMachine,
-            ContextStore contextStore,
             IntentEngine intentEngine,
             SkillRouter router,
             DebateSwarmEngine swarm,
@@ -43,14 +40,12 @@ public class AgentBrain {
             MemoryFacade memoryFacade,
             MetaCognitionEngine meta,
             IdentityPerceptionEngine identityPerceptionEngine,
-            @org.springframework.beans.factory.annotation.Qualifier("lessonConversationManager") com.darshan.agent.context.ConversationManager conversationManager,
             LessonEngine lessonEngine,
             PromptBuilder promptBuilder,
             OllamaClient ollamaClient
     ) {
         this.governor = governor;
         this.stateMachine = stateMachine;
-        this.contextStore = contextStore;
         this.intentEngine = intentEngine;
         this.router = router;
         this.swarm = swarm;
@@ -58,7 +53,6 @@ public class AgentBrain {
         this.memoryFacade = memoryFacade;
         this.meta = meta;
         this.identityPerceptionEngine = identityPerceptionEngine;
-        this.conversationManager = conversationManager;
         this.lessonEngine = lessonEngine;
         this.promptBuilder = promptBuilder;
         this.ollamaClient = ollamaClient;
@@ -69,7 +63,8 @@ public class AgentBrain {
     // =====================================================
     public AgentResponse process(
             String input,
-            ConversationContext context
+            ConversationContext context,
+            LessonState lessonState
     ) throws Exception {
 
         if (context == null) {
@@ -118,30 +113,29 @@ public class AgentBrain {
 
         // -------------------------------------------------
         // 6️⃣ HANDLE LESSON NAVIGATION INTENTS
+        // LessonEngine uses the session's LessonState for per-session isolation.
         // -------------------------------------------------
         switch (intent) {
             case "LEARN": {
                 String topic = input.replaceFirst("(?i)learn\\s+", "").trim();
                 if (topic.isEmpty()) topic = "general topics";
-                conversationManager.setActiveTopic(topic);
-                String result = lessonEngine.startLesson(topic);
-                // Session Manager handles all history tracking - no context history manipulation here
+                String result = lessonEngine.startLesson(topic, lessonState);
                 return new AgentResponse(result, false);
             }
             case "CONTINUE": {
-                String result = lessonEngine.nextChapter();
+                String result = lessonEngine.nextChapter(lessonState);
                 return new AgentResponse(result, false);
             }
             case "PREVIOUS": {
-                String result = lessonEngine.previousChapter();
+                String result = lessonEngine.previousChapter(lessonState);
                 return new AgentResponse(result, false);
             }
             case "SUMMARY": {
-                String result = lessonEngine.getSummary();
+                String result = lessonEngine.getSummary(lessonState);
                 return new AgentResponse(result, false);
             }
             case "QUIZ": {
-                String result = lessonEngine.quizMode();
+                String result = lessonEngine.quizMode(lessonState);
                 return new AgentResponse(result, false);
             }
             case "GOAL_QUERY": {
@@ -162,9 +156,8 @@ public class AgentBrain {
         if (skill != null) {
             rawReply = skill.execute(input, context);
         } else {
-            // Use PromptBuilder for direct response (bypass swarm for speed)
             boolean isLearningIntent = isLearningIntent(intent);
-            String instruction = buildInstruction(intent, isLearningIntent);
+            String instruction = buildInstruction(intent, isLearningIntent, lessonState);
             String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent);
             rawReply = ollamaClient.generateDirect(fullPrompt);
         }
@@ -185,16 +178,26 @@ public class AgentBrain {
         return new AgentResponse(finalReply, false);
     }
 
+    /**
+     * Backward-compatible overload for callers that don't have LessonState yet.
+     */
+    public AgentResponse process(
+            String input,
+            ConversationContext context
+    ) throws Exception {
+        return process(input, context, new LessonState());
+    }
+
     private boolean isLearningIntent(String intent) {
         return "LEARN".equals(intent) || "CONTINUE".equals(intent)
                 || "PREVIOUS".equals(intent) || "SUMMARY".equals(intent)
                 || "QUIZ".equals(intent);
     }
 
-    private String buildInstruction(String intent, boolean isLearningIntent) {
-        if (isLearningIntent && conversationManager.hasActiveLesson()) {
-            return "Teach the user about " + conversationManager.getActiveTopic()
-                    + ", chapter " + conversationManager.getChapterNumber()
+    private String buildInstruction(String intent, boolean isLearningIntent, LessonState lessonState) {
+        if (isLearningIntent && lessonState.hasActiveLesson()) {
+            return "Teach the user about " + lessonState.getActiveTopic()
+                    + ", chapter " + lessonState.getChapterNumber()
                     + ". Use a teaching tone.";
         }
         return "Respond naturally and helpfully.";

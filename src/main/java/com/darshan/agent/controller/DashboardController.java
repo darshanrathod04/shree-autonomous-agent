@@ -1,7 +1,6 @@
 package com.darshan.agent.controller;
 
 import com.darshan.agent.autonomy.GoalManager;
-import com.darshan.agent.context.ConversationManager;
 import com.darshan.agent.memory.EpisodicMemoryEngine;
 import com.darshan.agent.memory.UserProfile;
 import com.darshan.agent.memory.semantic.SemanticMemoryEngine;
@@ -25,7 +24,6 @@ public class DashboardController {
     private final UserProfile userProfile;
     private final SemanticMemoryEngine semanticMemory;
     private final EpisodicMemoryEngine episodicMemory;
-    private final ConversationManager conversationManager;
     private final PersonalityEngine personalityEngine;
 
     public DashboardController(
@@ -33,13 +31,11 @@ public class DashboardController {
             UserProfile userProfile,
             SemanticMemoryEngine semanticMemory,
             EpisodicMemoryEngine episodicMemory,
-            ConversationManager conversationManager,
             PersonalityEngine personalityEngine) {
         this.goalManager = goalManager;
         this.userProfile = userProfile;
         this.semanticMemory = semanticMemory;
         this.episodicMemory = episodicMemory;
-        this.conversationManager = conversationManager;
         this.personalityEngine = personalityEngine;
     }
 
@@ -90,26 +86,26 @@ public class DashboardController {
         Map<String, Object> result = new HashMap<>();
         result.put("semanticCount", semanticMemory.size());
         result.put("episodicCount", episodicMemory.all().size());
-        result.put("activeTopic", conversationManager.getActiveTopic());
-        result.put("lessonName", conversationManager.getLessonName());
-        result.put("chapterNumber", conversationManager.getChapterNumber());
-        result.put("currentObjective", conversationManager.getCurrentObjective());
-        result.put("completedChapters", conversationManager.getCompletedChapters().size());
-        result.put("hasActiveLesson", conversationManager.hasActiveLesson());
+        result.put("activeTopic", "Session-scoped (see per-session API)");
+        result.put("lessonName", "Session-scoped (see per-session API)");
+        result.put("chapterNumber", "Session-scoped (see per-session API)");
+        result.put("currentObjective", "Session-scoped (see per-session API)");
+        result.put("completedChapters", "Session-scoped (see per-session API)");
+        result.put("hasActiveLesson", false);
         return result;
     }
 
     @GetMapping("/lesson")
     public Map<String, Object> getLesson() {
         Map<String, Object> result = new HashMap<>();
-        result.put("hasActiveLesson", conversationManager.hasActiveLesson());
-        result.put("lessonName", conversationManager.getLessonName());
-        result.put("activeTopic", conversationManager.getActiveTopic());
-        result.put("chapterNumber", conversationManager.getChapterNumber());
-        result.put("currentObjective", conversationManager.getCurrentObjective());
-        result.put("completedChapters", conversationManager.getCompletedChapters());
-        result.put("pendingFollowups", conversationManager.getPendingFollowups());
-        result.put("progressSummary", conversationManager.buildProgressSummary());
+        result.put("hasActiveLesson", false);
+        result.put("lessonName", null);
+        result.put("activeTopic", null);
+        result.put("chapterNumber", 0);
+        result.put("currentObjective", null);
+        result.put("completedChapters", java.util.List.of());
+        result.put("pendingFollowups", java.util.List.of());
+        result.put("progressSummary", "Lesson state is now per-session. Use GET /agent/session/{sessionId} endpoint.");
         return result;
     }
 }
