@@ -1,0 +1,100 @@
+{
+  "sessionId" : "dde69c2f-160c-4132-8d5d-6cbf6fda3edf",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781713521.113691200,
+  "lastAccessedAt" : 1781756854.320424200,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "Become Java Developer",
+    "timestamp" : 1781713521.122679800,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781713611.422807600,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "hello",
+    "timestamp" : 1781713641.408066300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.",
+    "timestamp" : 1781713641.430047100,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what is java developer",
+    "timestamp" : 1781713671.343957400,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello, darling! As a **Java Developer**, you're someone who specializes in creating applications using the Java programming language. Being proficient in this area typically means that you have extensive knowledge of object-oriented concepts since Java heavily relies on them for designing robust and scalable software solutions. \n\nTo become a **Java Developer**, here is an action plan:\n1. Solidify your understanding of core programming fundamentals like variables, loops, conditional statements, etc., which are essential in any language including Java. You can find resources on Codecademy or the official Oracle documentation for this purpose. \n2. Learn about **Java syntax** and its structure since it's a statically-typed object-oriented programming language with robust libraries like Swing for GUI development, EJB for enterprise applications etc. There are plenty of interactive tutorials online which can help you get started (like [code.io](https://www.code.org/))\n3. Once comfortable with the basics and syntax, start building simple projects using Java to understand how it works in real scenarios like creating calculators or text editors etc. You might want to refer books like \"Head First Java\" for hands-on experience (available on Amazon). \n4. Understand **Java frameworks** such as Spring Boot, Struts2 and learn about their implementations by building small applications using them. This will give you a better understanding of how enterprise level systems are developed in Java. You can find tutorials or online courses like the ones offered here: [edX](https://www.edx.org/search?q=java&sortby=date_desc)\n5. To become more specialized, study **Advanced topics** such as memory management, concurrency and multithreading in Java which are crucial for developing high-performance applications. You can find resources on the Oracle website or books like \"Java Performance: Tips, Tricks, & Pitfalls\" by Chris Jester-Cox to learn these advanced concepts. \n6. Finally, continuously improve your skills and keep up with industry trends through webinars/conferences (like Java One) and online communities such as Stack Overflow or GitHub where you can share knowledge and get feedback from peers in the field of **Java Development**! Take your time.",
+    "timestamp" : 1781713735.476180100,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "i want to became a java developer",
+    "timestamp" : 1781713814.581955900,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781713904.848972300,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "give me a complete roadmap for java developer",
+    "timestamp" : 1781713934.260304600,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781714024.418773100,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "hii",
+    "timestamp" : 1781756531.942347600,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.",
+    "timestamp" : 1781756532.039080000,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what is my goal",
+    "timestamp" : 1781756763.959385900,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781756854.320424200,
+    "intent" : null
+  } ],
+  "summary" : "USER: Become Java Developer\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time...\nUSER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.\nUSER: what is java developer\nAI: \uD83D\uDE0A Hello, darling! As a **Java Developer**, you're...\nUSER: i want to became a java developer\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time...\nUSER: give me a complete roadmap for java developer\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time...\n... (4 more messages)\n",
+  "expired" : false,
+  "messageCount" : 14,
+  "firstMessage" : "Become Java Developer"
+}

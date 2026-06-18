@@ -1,0 +1,40 @@
+{
+  "sessionId" : "cce95eb6-5659-4f81-9df1-fbbbd3c15eb8",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "Knowledge:\nJava is an OOP language",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781756614.009178000,
+  "lastAccessedAt" : 1781756704.782338200,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "i want to became a java developer",
+    "timestamp" : 1781756614.014628400,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Sorry, my brain is warming up... Take your time.",
+    "timestamp" : 1781756704.782338200,
+    "intent" : null
+  } ],
+  "summary" : "USER: i want to became a java developer\nAI: \uD83D\uDE0A Sorry, my brain is warming up... Take your time...\n",
+  "expired" : false,
+  "messageCount" : 2,
+  "firstMessage" : "i want to became a java develo..."
+}
