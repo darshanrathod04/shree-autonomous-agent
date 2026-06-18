@@ -1,27 +1,57 @@
 {
   "relationships" : [ {
-    "id" : "b574a462-c010-4d46-9baa-f6199c2b15e7",
-    "sourceId" : "ac628eeb-dae3-4526-85e4-ad81cf57dee7",
-    "targetId" : "6cb448d3-a75d-4573-8750-00ed9303cbbe",
+    "id" : "d238e7d9-dcfa-49bf-8883-b2b9c42787f4",
+    "sourceId" : "9b4066a3-648d-4999-84ed-a640f79fd5d2",
+    "targetId" : "f6448e1f-86a6-4b26-b5ab-041187c6284b",
     "type" : "LEARNING",
     "properties" : { },
-    "createdAt" : 1781632053.640240500
+    "createdAt" : 1781633257.888350000
+  }, {
+    "id" : "9781c083-282f-43e0-95f1-41f44737073c",
+    "sourceId" : "9b4066a3-648d-4999-84ed-a640f79fd5d2",
+    "targetId" : "bc9d1fee-af31-4fe4-b50e-c9d1e505c1ce",
+    "type" : "LEARNING",
+    "properties" : { },
+    "createdAt" : 1781633948.376265300
+  }, {
+    "id" : "f3094884-6b56-439d-8334-f9b945f71726",
+    "sourceId" : "9b4066a3-648d-4999-84ed-a640f79fd5d2",
+    "targetId" : "84820147-5f54-4a33-8a30-612cbe6eda49",
+    "type" : "INTERESTED_IN",
+    "properties" : { },
+    "createdAt" : 1781713814.773399600
   } ],
   "entities" : [ {
-    "id" : "ac628eeb-dae3-4526-85e4-ad81cf57dee7",
-    "type" : "USER",
-    "name" : "Darshan",
-    "description" : "Primary user",
+    "id" : "bc9d1fee-af31-4fe4-b50e-c9d1e505c1ce",
+    "type" : "LEARNING_TOPIC",
+    "name" : "Journey",
+    "description" : null,
     "properties" : { },
-    "createdAt" : 1781632053.637899000,
-    "updatedAt" : 1781632053.637899000
+    "createdAt" : 1781633948.338830700,
+    "updatedAt" : 1781633948.338830700
   }, {
-    "id" : "6cb448d3-a75d-4573-8750-00ed9303cbbe",
+    "id" : "f6448e1f-86a6-4b26-b5ab-041187c6284b",
     "type" : "LEARNING_TOPIC",
     "name" : "Java",
     "description" : null,
     "properties" : { },
-    "createdAt" : 1781632053.639240700,
-    "updatedAt" : 1781632053.639240700
+    "createdAt" : 1781633257.887343200,
+    "updatedAt" : 1781633257.887343200
+  }, {
+    "id" : "9b4066a3-648d-4999-84ed-a640f79fd5d2",
+    "type" : "USER",
+    "name" : "Darshan",
+    "description" : "Primary user",
+    "properties" : { },
+    "createdAt" : 1781633257.886337000,
+    "updatedAt" : 1781633257.886337000
+  }, {
+    "id" : "84820147-5f54-4a33-8a30-612cbe6eda49",
+    "type" : "GOAL",
+    "name" : "Became a java developer",
+    "description" : null,
+    "properties" : { },
+    "createdAt" : 1781713814.658243000,
+    "updatedAt" : 1781756614.019628900
   } ]
 }

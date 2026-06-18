@@ -38,11 +38,10 @@ public class PromptBuilder {
         this.conversationManager = conversationManager;
     }
 
-    /**
-     * Build a comprehensive prompt with all available context.
-     */
     public String buildFullPrompt(String input, String instruction, ConversationContext context,
-                                   boolean isLearningIntent, List<String> graphFacts, List<String> projectFacts) {
+                                   boolean isLearningIntent, List<String> graphFacts,
+                                   List<String> projectFacts, List<String> chiefInsights,
+                                   List<String> planFacts) {
         StringBuilder prompt = new StringBuilder();
 
         prompt.append("""
@@ -98,6 +97,22 @@ public class PromptBuilder {
             prompt.append("\n");
         }
 
+        if (chiefInsights != null && !chiefInsights.isEmpty()) {
+            prompt.append("CHIEF OF STAFF INSIGHT:\n");
+            for (String insight : chiefInsights) {
+                prompt.append("- ").append(insight).append("\n");
+            }
+            prompt.append("\n");
+        }
+
+        if (planFacts != null && !planFacts.isEmpty()) {
+            prompt.append("ACTIVE PLAN:\n");
+            for (String fact : planFacts) {
+                prompt.append("- ").append(fact).append("\n");
+            }
+            prompt.append("\n");
+        }
+
         String history = context.getConversationSummary();
         if (history != null && !history.isEmpty()) {
             String[] lines = history.split("\n");
@@ -118,18 +133,30 @@ public class PromptBuilder {
         return prompt.toString();
     }
 
+    // Backward compatible overloads
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts, List<String> projectFacts) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts, null, null);
+    }
+
+    public String buildFullPrompt(String input, String instruction, ConversationContext context,
+                                   boolean isLearningIntent, List<String> graphFacts, List<String> projectFacts,
+                                   List<String> chiefInsights) {
+        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts, chiefInsights, null);
+    }
+
     public String buildFullPrompt(String input, String instruction, ConversationContext context,
                                    boolean isLearningIntent, List<String> graphFacts) {
-        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, null);
+        return buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, null, null);
     }
 
     public String buildFullPrompt(String input, String instruction, ConversationContext context,
                                    boolean isLearningIntent) {
-        return buildFullPrompt(input, instruction, context, isLearningIntent, null, null);
+        return buildFullPrompt(input, instruction, context, isLearningIntent, null, null, null);
     }
 
     public String buildFullPrompt(String input, String instruction, ConversationContext context) {
-        return buildFullPrompt(input, instruction, context, false, null, null);
+        return buildFullPrompt(input, instruction, context, false, null, null, null);
     }
 
     public String buildProfileContext() {

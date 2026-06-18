@@ -1,0 +1,22 @@
+{
+  "insights" : [ {
+    "id" : "9e118856-61df-444f-b87f-fa7668a74c2f",
+    "type" : "LEARNING_GAP",
+    "severity" : "MEDIUM",
+    "priorityScore" : 70,
+    "message" : "2 learning topics tracked: Journey, Java",
+    "recommendation" : "Review your learning progress and continue with the next topic",
+    "resolved" : false,
+    "createdAt" : 1781753886.439446900
+  } ],
+  "currentRecommendation" : {
+    "id" : "9e118856-61df-444f-b87f-fa7668a74c2f",
+    "type" : "LEARNING_GAP",
+    "severity" : "MEDIUM",
+    "priorityScore" : 70,
+    "message" : "2 learning topics tracked: Journey, Java",
+    "recommendation" : "Review your learning progress and continue with the next topic",
+    "resolved" : false,
+    "createdAt" : 1781753886.439446900
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "sessionId" : "3ba04677-2cae-4d31-b0c4-2e81daaaee59",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "createdAt" : 1781633126.687339500,
+  "lastAccessedAt" : 1781633144.947245000,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "test message",
+    "timestamp" : 1781633126.688339900,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello! It looks like you're here to ask something or get assistance with a topic related to **technology**, education, science, etc., isn't it? I would love to hear more about your needs so we can explore them together in our conversation. If there is anything specific that piques your curiosity or if you have any homework questions, feel free to share! Take your time.",
+    "timestamp" : 1781633144.947245000,
+    "intent" : null
+  } ],
+  "messageCount" : 2,
+  "summary" : "USER: test message\nAI: \uD83D\uDE0A Hello! It looks like you're here to ask somethi...\n",
+  "firstMessage" : "test message",
+  "expired" : false
+}

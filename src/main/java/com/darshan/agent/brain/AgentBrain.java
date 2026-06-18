@@ -1,7 +1,9 @@
 package com.darshan.agent.brain;
 
 import com.darshan.agent.brain.perception.IdentityPerceptionEngine;
+import com.darshan.agent.chief.ChiefOfStaffEngine;
 import com.darshan.agent.cognition.*;
+import com.darshan.agent.planning.AutonomousPlanningEngine;
 import com.darshan.agent.context.ConversationContext;
 import com.darshan.agent.context.LessonEngine;
 import com.darshan.agent.context.LessonState;
@@ -35,6 +37,8 @@ public class AgentBrain {
     private final OllamaClient ollamaClient;
     private final KnowledgeGraphEngine knowledgeGraph;
     private final ProjectIntelligenceEngine projectIntelligence;
+    private final ChiefOfStaffEngine chiefOfStaff;
+    private final AutonomousPlanningEngine planningEngine;
 
     public AgentBrain(
             CognitiveGovernorEngine governor,
@@ -50,7 +54,9 @@ public class AgentBrain {
             PromptBuilder promptBuilder,
             OllamaClient ollamaClient,
             KnowledgeGraphEngine knowledgeGraph,
-            ProjectIntelligenceEngine projectIntelligence
+            ProjectIntelligenceEngine projectIntelligence,
+            ChiefOfStaffEngine chiefOfStaff,
+            AutonomousPlanningEngine planningEngine
     ) {
         this.governor = governor;
         this.stateMachine = stateMachine;
@@ -66,6 +72,8 @@ public class AgentBrain {
         this.ollamaClient = ollamaClient;
         this.knowledgeGraph = knowledgeGraph;
         this.projectIntelligence = projectIntelligence;
+        this.chiefOfStaff = chiefOfStaff;
+        this.planningEngine = planningEngine;
     }
 
     // =====================================================
@@ -161,7 +169,11 @@ public class AgentBrain {
             String instruction = buildInstruction(intent, isLearningIntent, lessonState);
             List<String> graphFacts = knowledgeGraph.getContextFacts(input);
             List<String> projectFacts = projectIntelligence.getContextFacts(input);
-            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts);
+            List<String> chiefInsights = chiefOfStaff.getContextInsights();
+            List<String> planFacts = planningEngine.getActivePlan()
+                    .map(p -> List.of(planningEngine.getPlanSummary()))
+                    .orElse(List.of());
+            String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts, chiefInsights, planFacts);
             rawReply = ollamaClient.generateDirect(fullPrompt);
         }
 
@@ -180,9 +192,6 @@ public class AgentBrain {
         return new AgentResponse(finalReply, false);
     }
 
-    /**
-     * Backward-compatible overload for callers that don't have LessonState yet.
-     */
     public AgentResponse process(
             String input,
             ConversationContext context
@@ -205,9 +214,6 @@ public class AgentBrain {
         return "Respond naturally and helpfully.";
     }
 
-    /**
-     * Strip placeholder text that the LLM sometimes generates.
-     */
     private String stripPlaceholders(String reply) {
         if (reply == null) return reply;
         reply = reply.replaceAll("(?i)\\[insert[^\\]]*\\]", "");

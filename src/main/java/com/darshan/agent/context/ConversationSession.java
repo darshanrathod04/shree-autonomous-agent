@@ -1,5 +1,6 @@
-package com.darshan.agent.context;
+ package com.darshan.agent.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.Instant;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.UUID;
  * Represents a conversation session with its own context and message history.
  * Each session is isolated, enabling multi-user support.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConversationSession {
     
     private String sessionId;
