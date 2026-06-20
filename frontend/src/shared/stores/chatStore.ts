@@ -134,22 +134,42 @@ export const useChatStore = create<ChatState>((set, get) => ({
     const key = state.activeSessionId || '__no_session__';
     const current = getSessionState(state.sessions, key);
     if (current.streamingContent) {
-      const message: Message = {
-        id: `msg-${Date.now()}`,
-        role: 'assistant',
-        content: current.streamingContent,
-        timestamp: Date.now(),
-      };
-      set({
-        sessions: {
-          ...state.sessions,
-          [key]: {
-            messages: [...current.messages, message],
-            isStreaming: false,
-            streamingContent: '',
+      // Check if the last message is already this assistant response (prevent duplicates)
+      const messages = current.messages;
+      const isDuplicate = messages.length > 0
+        && messages[messages.length - 1].role === 'assistant'
+        && messages[messages.length - 1].content === current.streamingContent;
+
+      if (!isDuplicate) {
+        const message: Message = {
+          id: `msg-${Date.now()}`,
+          role: 'assistant',
+          content: current.streamingContent,
+          timestamp: Date.now(),
+        };
+        set({
+          sessions: {
+            ...state.sessions,
+            [key]: {
+              messages: [...current.messages, message],
+              isStreaming: false,
+              streamingContent: '',
+            },
           },
-        },
-      });
+        });
+      } else {
+        // Just clear streaming state, message already exists
+        set({
+          sessions: {
+            ...state.sessions,
+            [key]: {
+              ...current,
+              isStreaming: false,
+              streamingContent: '',
+            },
+          },
+        });
+      }
     } else {
       set({
         sessions: {

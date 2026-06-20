@@ -20,8 +20,23 @@
     "type" : "INTERESTED_IN",
     "properties" : { },
     "createdAt" : 1781713814.773399600
+  }, {
+    "id" : "36405c92-052f-4b8d-a418-3805a259f4c6",
+    "sourceId" : "9b4066a3-648d-4999-84ed-a640f79fd5d2",
+    "targetId" : "2355714d-4b05-49cc-9a0f-9d8eb4600203",
+    "type" : "INTERESTED_IN",
+    "properties" : { },
+    "createdAt" : 1781757515.913303000
   } ],
   "entities" : [ {
+    "id" : "2355714d-4b05-49cc-9a0f-9d8eb4600203",
+    "type" : "GOAL",
+    "name" : "Become a Java Developer",
+    "description" : null,
+    "properties" : { },
+    "createdAt" : 1781757515.881295400,
+    "updatedAt" : 1781856505.484693900
+  }, {
     "id" : "bc9d1fee-af31-4fe4-b50e-c9d1e505c1ce",
     "type" : "LEARNING_TOPIC",
     "name" : "Journey",
@@ -52,6 +67,6 @@
     "description" : null,
     "properties" : { },
     "createdAt" : 1781713814.658243000,
-    "updatedAt" : 1781756614.019628900
+    "updatedAt" : 1781777018.413795700
   } ]
 }

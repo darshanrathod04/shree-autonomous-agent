@@ -3,7 +3,9 @@ package com.darshan.agent.brain;
 import com.darshan.agent.brain.perception.IdentityPerceptionEngine;
 import com.darshan.agent.chief.ChiefOfStaffEngine;
 import com.darshan.agent.cognition.*;
+import com.darshan.agent.memory.UserProfile;
 import com.darshan.agent.planning.AutonomousPlanningEngine;
+import com.darshan.agent.planning.ExecutionPlan;
 import com.darshan.agent.context.ConversationContext;
 import com.darshan.agent.context.LessonEngine;
 import com.darshan.agent.context.LessonState;
@@ -108,8 +110,8 @@ public class AgentBrain {
             return new AgentResponse(stateReply, false);
         }
 
-        // 3. IDENTITY PERCEPTION (extract user name + interests)
-        identityPerceptionEngine.perceive(input);
+        // 3. IDENTITY PERCEPTION (extract user name + interests) with per-session context
+        identityPerceptionEngine.perceive(input, context);
 
         // 3b. KNOWLEDGE GRAPH EXTRACTION
         knowledgeGraph.extractFromInput(input);
@@ -121,12 +123,85 @@ public class AgentBrain {
         String recalledMemory = memoryFacade.recallAll(input);
         context.setWorkingMemory(recalledMemory);
 
+        // ROADMAP SELECTION FLOW
+
+        if ("ROADMAP_SELECTION".equals(context.getPendingAction())) {
+
+            context.setPendingAction(null);
+
+            ExecutionPlan plan =
+                    planningEngine.generatePlan(input);
+
+            String planSummary =
+                    planningEngine.getPlanSummary();
+
+            return new AgentResponse(
+                    "📋 Roadmap Created\n\n"
+                            + planSummary,
+                    false
+            );
+        }
+
         // 5. INTENT DETECTION
         String intent = intentEngine.detectIntent(input);
         context.setLastIntent(intent);
+        System.out.println("[AgentBrain] DETECTED INTENT: " + intent);
 
-        // 6. HANDLE LESSON NAVIGATION INTENTS
+        // 6. HANDLE INTENTS
         switch (intent) {
+            case "NEXT_STEP": {
+
+                String summary =
+                        planningEngine.getPlanSummary();
+
+                return new AgentResponse(
+                        "🎯 Current Plan\n\n"
+                                + summary,
+                        false
+                );
+            }
+            case "ROADMAP_REQUEST": {
+
+                context.setPendingAction(
+                        "ROADMAP_SELECTION"
+                );
+
+                return new AgentResponse(
+                        """
+                        Which roadmap would you like?
+            
+                        1. Java Developer
+                        2. Spring Boot
+                        3. DSA
+                        4. Interview Preparation
+                        5. AI Engineer
+                        """,
+                        false
+                );
+            }
+            case "WHO_AM_I": {
+                System.out.println("[AgentBrain] EXECUTING WHO_AM_I BRANCH");
+                String name = context.getUserName();
+                System.out.println("[AgentBrain] WHO_AM_I: context.getUserName() = " + name);
+                if (name != null && !name.isEmpty()) {
+                    System.out.println("[AgentBrain] WHO_AM_I: Returning session name: " + name);
+                    return new AgentResponse("Your name is " + name + ".", false);
+                }
+                // No global fallback — each session has isolated identity.
+                // Session C starting fresh should NOT see Session A's name.
+                System.out.println("[AgentBrain] WHO_AM_I: No name in context, returning default");
+                return new AgentResponse("I don't know your name yet. Please tell me your name.", false);
+            }
+            case "PLAN": {
+                System.out.println("[AgentBrain] EXECUTING PLAN BRANCH");
+                String planDescription = input.replaceFirst("(?i)(i want to become a|become a|plan|roadmap|career path|learning path|steps to|how do i become|how to become)\\s*", "").trim();
+                if (planDescription.isEmpty()) planDescription = input;
+                ExecutionPlan plan = planningEngine.generatePlan(planDescription);
+                String planSummary = planningEngine.getPlanSummary();
+                String responseText = "📋 **Roadmap Created**\n\n" + planSummary + "\n\nI've broken this down into milestones and tasks. Check the Planning tab for full details, or ask me about your daily priorities!";
+                System.out.println("[AgentBrain] PLAN: Returning roadmap directly (no LLM)");
+                return new AgentResponse(responseText, false);
+            }
             case "LEARN": {
                 String topic = input.replaceFirst("(?i)learn\\s+", "").trim();
                 if (topic.isEmpty()) topic = "general topics";
@@ -149,6 +224,7 @@ public class AgentBrain {
                 String result = lessonEngine.quizMode(lessonState);
                 return new AgentResponse(result, false);
             }
+
             case "GOAL_QUERY": {
                 String goalStatus = promptBuilder.buildGoalContext();
                 if (goalStatus.isEmpty()) {
@@ -156,15 +232,19 @@ public class AgentBrain {
                 }
                 return new AgentResponse(goalStatus, false);
             }
+
         }
 
         // 7. SKILL ROUTING
         Skill skill = router.route(intent);
+        System.out.println("[AgentBrain] SKILL ROUTING | intent=" + intent + " | skill=" + (skill != null ? skill.getClass().getSimpleName() : "null"));
         String rawReply;
 
         if (skill != null) {
+            System.out.println("[AgentBrain] EXECUTING SKILL: " + skill.getClass().getSimpleName());
             rawReply = skill.execute(input, context);
         } else {
+            System.out.println("[AgentBrain] FALLING THROUGH TO LLM | intent=" + intent);
             boolean isLearningIntent = isLearningIntent(intent);
             String instruction = buildInstruction(intent, isLearningIntent, lessonState);
             List<String> graphFacts = knowledgeGraph.getContextFacts(input);
@@ -174,6 +254,11 @@ public class AgentBrain {
                     .map(p -> List.of(planningEngine.getPlanSummary()))
                     .orElse(List.of());
             String fullPrompt = promptBuilder.buildFullPrompt(input, instruction, context, isLearningIntent, graphFacts, projectFacts, chiefInsights, planFacts);
+            System.out.println("========== TRACE ==========");
+            System.out.println("SESSION USER = " + context.getUserName());
+
+            System.out.println("===========================");
+            System.out.println("[AgentBrain] LLM PROMPT (first 500 chars): " + fullPrompt.substring(0, Math.min(500, fullPrompt.length())));
             rawReply = ollamaClient.generateDirect(fullPrompt);
         }
 

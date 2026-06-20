@@ -63,13 +63,17 @@ public class SessionRepository {
      */
     public Optional<ConversationSession> findById(String sessionId) {
         if (sessionId == null) {
+            System.out.println("[SessionRepo] REQUESTED null sessionId → returning empty");
             return Optional.empty();
         }
+        
+        System.out.println("[SessionRepo] REQUESTED sessionId: " + sessionId);
         
         // Check cache first
         if (sessionCache.containsKey(sessionId)) {
             ConversationSession session = sessionCache.get(sessionId);
             session.touch();
+            System.out.println("[SessionRepo] LOADED from cache: " + sessionId + " userName=" + session.getContext().getUserName());
             return Optional.of(session);
         }
         
@@ -79,14 +83,17 @@ public class SessionRepository {
             if (file.exists()) {
                 ConversationSession session = objectMapper.readValue(file, ConversationSession.class);
                 session.touch();
+                System.out.println("[SessionRepo] LOADED from file: " + sessionId + " userName=" + session.getContext().getUserName());
                 
                 // Update cache
                 sessionCache.put(sessionId, session);
                 
                 return Optional.of(session);
+            } else {
+                System.out.println("[SessionRepo] FILE NOT FOUND: " + file.getAbsolutePath());
             }
         } catch (IOException e) {
-            System.err.println("Failed to load session: " + sessionId);
+            System.err.println("[SessionRepo] FAILED to load session: " + sessionId);
             e.printStackTrace();
         }
         

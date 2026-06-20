@@ -1,0 +1,163 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.darshan.agent:ai-agent >---------------------
+[INFO] Building ai-agent 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.2:run (default-cli) > test-compile @ ai-agent >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ai-agent ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ai-agent ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ai-agent ---
+[INFO] skip non existing resourceDirectory C:\ai-agent\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ai-agent ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.2:run (default-cli) < test-compile @ ai-agent <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.2:run (default-cli) @ ai-agent ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.2)
+
+2026-06-18T11:47:43.078+05:30  INFO 30688 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : Starting AiAgentApplication using Java 21.0.7 with PID 30688 (C:\ai-agent\target\classes started by darsh in C:\ai-agent)
+2026-06-18T11:47:43.086+05:30  INFO 30688 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-18T11:47:45.195+05:30  INFO 30688 --- [ai-agent] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-18T11:47:45.226+05:30  INFO 30688 --- [ai-agent] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-18T11:47:45.227+05:30  INFO 30688 --- [ai-agent] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-06-18T11:47:45.349+05:30  INFO 30688 --- [ai-agent] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2157 ms
+? Semantic memory loaded: 1 knowledge entries, 5 concepts
+? Conversation state restored: topic=null, chapter=0, lesson=null
+? Lessons loaded: 5 topics
+[KnowledgeGraph] Loaded 5 entities, 4 relationships
+[ProjectIntelligence] Loaded 1 projects
+[ChiefOfStaff] Loaded 1 insights
+2026-06-18T11:47:46.905+05:30  WARN 30688 --- [ai-agent] [           main] .s.a.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: a8790353-0e68-44a8-8093-5e1939b8d6d6
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-06-18T11:47:46.921+05:30  INFO 30688 --- [ai-agent] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-06-18T11:47:47.208+05:30  INFO 30688 --- [ai-agent] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-06-18T11:47:47.666+05:30  INFO 30688 --- [ai-agent] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-18T11:47:47.678+05:30  INFO 30688 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : Started AiAgentApplication in 5.544 seconds (process running for 6.509)
+2026-06-18T11:47:47.680+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #1 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:48:02.688+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #2 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:48:17.695+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #3 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:48:32.703+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #4 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:48:47.705+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #5 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:49:02.707+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #6 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:49:17.720+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #7 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:49:32.734+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #8 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:49:47.743+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #9 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:50:02.756+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #10 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:50:17.765+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #11 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:50:32.778+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #12 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:50:47.785+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #13 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:51:02.799+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #14 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:51:17.811+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #15 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:51:32.825+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #16 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:51:47.830+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #17 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:52:02.841+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #18 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:52:17.850+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #19 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:52:32.861+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #20 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:52:47.867+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #21 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:53:02.872+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #22 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:53:17.886+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #23 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:53:32.889+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #24 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:53:47.890+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #25 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:54:02.902+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #26 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:54:17.918+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #27 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:54:32.930+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #28 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:54:47.945+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #29 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:55:02.951+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #30 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:55:17.954+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #31 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:55:32.967+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #32 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:55:47.980+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #33 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:56:02.996+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #34 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:56:18.009+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #35 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:56:33.018+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #36 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:56:48.028+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #37 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:57:03.034+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #38 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:57:18.045+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #39 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:57:33.049+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #40 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:57:48.064+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #41 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:58:03.067+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #42 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:58:18.074+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #43 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:58:33.086+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #44 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:58:48.088+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #45 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:59:03.089+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #46 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:59:18.104+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #47 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:59:33.116+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #48 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T11:59:48.125+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #49 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:00:03.128+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #50 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:00:18.143+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #51 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:00:33.152+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #52 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:00:48.174+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #53 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:01:03.185+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #54 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:01:18.187+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #55 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:01:33.188+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #56 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:01:48.192+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #57 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:02:03.198+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #58 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:02:18.202+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #59 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:02:33.206+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #60 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:02:48.216+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #61 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:03:03.219+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #62 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:03:18.220+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #63 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:03:33.220+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #64 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:03:48.236+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #65 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:04:03.250+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #66 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:04:18.301+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #67 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:04:33.380+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #68 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:04:48.601+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #69 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:05:03.720+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #70 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:05:18.729+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #71 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:05:33.730+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #72 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:05:48.732+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #73 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:06:03.740+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #74 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:06:18.750+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #75 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:06:33.752+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #76 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:06:47.228+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-18T12:06:47.232+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-18T12:06:47.359+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 125 ms
+2026-06-18T12:06:48.022+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] com.darshan.agent.service.AgentService   : [AgentService] Processing request, sessionId=null, inputLength=18
+2026-06-18T12:06:48.022+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] PAUSED by user request
+? Session created: e63f8c40-3712-43fd-bc9a-1809f562d102
+? Identity Learned ? Darshan (session: Darshan)
+2026-06-18T12:06:48.143+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] com.darshan.agent.service.AgentService   : [AgentService] Brain processing completed in 33ms
+2026-06-18T12:06:48.145+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] com.darshan.agent.service.AgentService   : [AgentService] Request completed in 124ms (total)
+2026-06-18T12:06:48.146+05:30  INFO 30688 --- [ai-agent] [nio-8080-exec-1] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] RESUMED after user request
+2026-06-18T12:06:48.758+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #77 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:07:03.773+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #78 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+2026-06-18T12:07:18.778+05:30  INFO 30688 --- [ai-agent] [omous-scheduler] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Tick #79 starting... Thought in progress: false, Paused: false, Active Ollama: 0
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19:54 min
+[INFO] Finished at: 2026-06-18T12:07:31+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.2:run (default-cli) on project ai-agent: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
+C:\ai-agent>

@@ -42,6 +42,7 @@ public class PromptBuilder {
                                    boolean isLearningIntent, List<String> graphFacts,
                                    List<String> projectFacts, List<String> chiefInsights,
                                    List<String> planFacts) {
+        System.out.println("[PromptBuilder] buildFullPrompt() called | input='" + input + "' | context.userName=" + (context != null ? context.getUserName() : "null"));
         StringBuilder prompt = new StringBuilder();
 
         prompt.append("""
@@ -58,7 +59,7 @@ public class PromptBuilder {
 
                 """);
 
-        String profileContext = buildProfileContext();
+        String profileContext = buildProfileContext(context);
         if (!profileContext.isEmpty()) {
             prompt.append("USER PROFILE:\n").append(profileContext).append("\n");
         }
@@ -159,19 +160,46 @@ public class PromptBuilder {
         return buildFullPrompt(input, instruction, context, false, null, null, null);
     }
 
-    public String buildProfileContext() {
+    public String buildProfileContext(ConversationContext context) {
+
         StringBuilder sb = new StringBuilder();
-        if (userProfile.getName() != null && !userProfile.getName().isBlank()) {
-            sb.append("Name: ").append(userProfile.getName()).append("\n");
+
+        String sessionName = context != null
+                ? context.getUserName()
+                : null;
+
+        System.out.println(
+                "[PromptBuilder] buildProfileContext() called | sessionName="
+                        + sessionName);
+
+        // Session-specific identity
+        if (sessionName != null && !sessionName.isBlank()) {
+            sb.append("Name: ").append(sessionName).append("\n");
         }
-        if (userProfile.getTeachingStyle() != null) {
-            sb.append("Preferred teaching style: ").append(userProfile.getTeachingStyle()).append("\n");
+
+        // Global preferences only
+        if (userProfile.getTeachingStyle() != null
+                && !userProfile.getTeachingStyle().isBlank()) {
+
+            sb.append("Preferred teaching style: ")
+                    .append(userProfile.getTeachingStyle())
+                    .append("\n");
         }
+
         if (!userProfile.getPreferences().isEmpty()) {
+
             sb.append("Interests: ");
-            userProfile.getPreferences().forEach((k, v) -> sb.append(k).append("=").append(v).append(", "));
+
+            userProfile.getPreferences().forEach(
+                    (k, v) -> sb.append(k)
+                            .append("=")
+                            .append(v)
+                            .append(", ")
+            );
+
             sb.append("\n");
         }
+
         return sb.toString();
     }
 
