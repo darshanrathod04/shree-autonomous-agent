@@ -1,4 +1,4 @@
-package com.darshan.agent.autonomy;
+ package com.darshan.agent.autonomy;
 
 import com.darshan.agent.brain.WorldModel;
 import com.darshan.agent.cognition.*;
@@ -23,6 +23,7 @@ public class AutonomousLoop {
     private final ActivityFeed activityFeed;
     private final MetaCognitionEngine metaCognition;
     private final EpisodicRecallEngine recall;
+    private final com.darshan.agent.llm.OllamaClient ollamaClient;
 
     public AutonomousLoop(
             GoalManager goals,
@@ -34,7 +35,8 @@ public class AutonomousLoop {
             MotivationEngine motivationEngine,
             ActivityFeed activityFeed,
             MetaCognitionEngine metaCognition,
-            EpisodicRecallEngine recall
+            EpisodicRecallEngine recall,
+            com.darshan.agent.llm.OllamaClient ollamaClient
     ) {
         this.goals = goals;
         this.router = router;
@@ -46,6 +48,7 @@ public class AutonomousLoop {
         this.activityFeed = activityFeed;
         this.metaCognition = metaCognition;
         this.recall = recall;
+        this.ollamaClient = ollamaClient;
     }
     // ===============================
 // LOOP STABILITY GUARD
@@ -84,8 +87,11 @@ public class AutonomousLoop {
         SubGoal step = goal.nextPending();
 
         if (step == null) {
-            goals.clearGoal();
-            return "✅ Goal completed.";
+            // SAFETY GUARD: Do NOT auto-complete goals.
+            // Goals must only be completed when ALL milestones and ALL tasks are done.
+            // The scheduler is disabled in USER-ONLY MODE, so this path should not execute.
+            // If it does, we return without clearing the goal.
+            return "⏸ No pending steps. Goal remains active until all plan tasks are completed.";
         }
 
         activityFeed.add(
@@ -100,14 +106,13 @@ public class AutonomousLoop {
 
 
 
-        Skill skill = router.route("CHAT");
-
-        if (skill == null) {
-            return "⚠ No thinking skill.";
-        }
-
-        String result =
-                skill.execute(step.getDescription(), context);
+        // SCHEDULER FIX: Use direct Ollama call instead of skill routing.
+        // This avoids competing with user requests for the same Ollama instance
+        // and uses the dedicated scheduler client with proper instrumentation.
+        String prompt = "You are Shree, an autonomous learning agent. " +
+                "Your current goal step is: " + step.getDescription() + ". " +
+                "Execute this step and provide a brief result.";
+        String result = ollamaClient.generateScheduler(prompt);
 
         Thought thought = new Thought(
                 step.getDescription(),

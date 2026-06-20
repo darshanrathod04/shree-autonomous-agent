@@ -12,24 +12,21 @@ interface ChatAreaProps {
 }
 
 export function ChatArea({ sessionId }: ChatAreaProps) {
-  const { setActiveSession, getMessages, getIsStreaming, getStreamingContent, setMessages } = useChatStore();
+  const { setActiveSession, getMessages, getIsStreaming, getStreamingContent, setMessages, clearMessages } = useChatStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const loadedSessionRef = useRef<string | null>(null);
 
-  // Sync active session ID with chatStore
+  // Sync active session ID with chatStore and clear messages when switching sessions
   useEffect(() => {
     setActiveSession(sessionId);
-  }, [sessionId, setActiveSession]);
+    // Clear messages immediately when switching sessions to prevent contamination
+    clearMessages();
+    loadedSessionRef.current = null;
+  }, [sessionId, setActiveSession, clearMessages]);
 
   // Load messages when session changes
   useEffect(() => {
     if (!sessionId) {
-      loadedSessionRef.current = null;
-      return;
-    }
-
-    // Skip reload if we already loaded this session's messages
-    if (loadedSessionRef.current === sessionId) {
       return;
     }
 

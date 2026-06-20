@@ -13,14 +13,17 @@ public class IntentEngine {
     }
 
     public String detectIntent(String input) {
-
+        String rawInput = input;
         String text = input.toLowerCase().trim();
+        
+        System.out.println("[IntentEngine] RAW INPUT: '" + rawInput + "' | NORMALIZED: '" + text + "'");
 
         // Identity detection (highest priority)
         if (text.contains("who am i")
                 || text.contains("what is my name")
                 || text.contains("mera naam kya")
                 || text.equals("whoami")) {
+            System.out.println("[IntentEngine] DETECTED: WHO_AM_I");
             return "WHO_AM_I";
         }
 
@@ -67,6 +70,18 @@ public class IntentEngine {
             return "STUDY";
         }
 
+        if(text.contains("roadmap")) {
+            return "ROADMAP_REQUEST";
+        }
+
+        // Planning/roadmap intent
+        if (text.contains("become a") || text.contains("plan") || text.contains("roadmap")
+                || text.contains("career path") || text.contains("learning path")
+                || text.contains("steps to") || text.contains("how do i become")
+                || text.contains("how to become")) {
+            return "PLAN";
+        }
+
         // Greeting
         if (text.contains("hello") || text.contains("hi") || text.contains("hey"))
             return "GREETING";
@@ -87,11 +102,23 @@ public class IntentEngine {
         if (text.contains("remind") || text.contains("reminder"))
             return "REMINDER";
 
+        if(text.contains("what should i do next")
+                || text.equals("next")
+                || text.contains("next task")
+                || text.contains("next step")) {
+
+            return "NEXT_STEP";
+        }
+
         return "DEFAULT";
     }
 
     private boolean isFollowUp(String text) {
         return text.equals("next")
+                || text.equals("ok next")
+                || text.equals("okay next")
+                || text.equals("next please")
+                || text.contains("what next")
                 || text.equals("continue")
                 || text.equals("resume")
                 || text.equals("go on")

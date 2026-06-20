@@ -1,11 +1,13 @@
 package com.darshan.agent.planning;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlanMilestone {
     private String id;
     private String title;
@@ -32,6 +34,7 @@ public class PlanMilestone {
         this.targetDate = targetDate;
     }
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public double getProgress() {
         if (tasks.isEmpty()) return 0;
         long done = tasks.stream().filter(ExecutionTask::isCompleted).count();

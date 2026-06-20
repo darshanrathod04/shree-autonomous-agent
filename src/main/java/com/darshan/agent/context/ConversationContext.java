@@ -24,6 +24,16 @@ public class ConversationContext {
 
     private String workingMemory;
 
+    private String pendingAction;
+
+    public String getPendingAction() {
+        return pendingAction;
+    }
+
+    public void setPendingAction(String pendingAction) {
+        this.pendingAction = pendingAction;
+    }
+
     public void setWorkingMemory(String memory){
         this.workingMemory = memory;
     }

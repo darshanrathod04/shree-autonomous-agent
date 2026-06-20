@@ -1,0 +1,41 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.2)
+
+2026-06-18T15:03:40.104+05:30  INFO 16352 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : Starting AiAgentApplication using Java 21.0.7 with PID 16352 (C:\ai-agent\target\classes started by darsh in C:\ai-agent)
+2026-06-18T15:03:40.109+05:30  INFO 16352 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-18T15:03:41.744+05:30  INFO 16352 --- [ai-agent] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-18T15:03:41.767+05:30  INFO 16352 --- [ai-agent] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-18T15:03:41.768+05:30  INFO 16352 --- [ai-agent] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-06-18T15:03:41.861+05:30  INFO 16352 --- [ai-agent] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1672 ms
+? Semantic memory loaded: 1 knowledge entries, 5 concepts
+? Conversation state restored: topic=null, chapter=0, lesson=null
+2026-06-18T15:03:42.709+05:30  INFO 16352 --- [ai-agent] [           main] c.d.agent.autonomy.AutonomousScheduler   : [Autonomous] Scheduler is DISABLED — running in USER-ONLY MODE
+? Lessons loaded: 5 topics
+[KnowledgeGraph] Loaded 5 entities, 4 relationships
+[ProjectIntelligence] Loaded 1 projects
+[ChiefOfStaff] Loaded 1 insights
+[Planning] Loaded 2 plans
+2026-06-18T15:03:43.093+05:30  WARN 16352 --- [ai-agent] [           main] .s.a.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: e9d81811-00ab-4713-94d3-647918015f45
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-06-18T15:03:43.106+05:30  INFO 16352 --- [ai-agent] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-06-18T15:03:43.335+05:30  INFO 16352 --- [ai-agent] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-06-18T15:03:43.696+05:30  INFO 16352 --- [ai-agent] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-18T15:03:43.706+05:30  INFO 16352 --- [ai-agent] [           main] com.darshan.agent.AiAgentApplication     : Started AiAgentApplication in 4.295 seconds (process running for 4.935)
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.2:run (default-cli) on project ai-agent: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

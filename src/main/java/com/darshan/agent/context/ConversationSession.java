@@ -18,6 +18,7 @@ public class ConversationSession {
     private String userId;
     private ConversationContext context;
     private LessonState lessonState;
+    private String sessionUserName;
     private Instant createdAt;
     private Instant lastAccessedAt;
     private List<SessionMessage> messageHistory;
@@ -135,6 +136,14 @@ public class ConversationSession {
     
     public void setLessonState(LessonState lessonState) {
         this.lessonState = lessonState;
+    }
+
+    public String getSessionUserName() {
+        return sessionUserName;
+    }
+
+    public void setSessionUserName(String sessionUserName) {
+        this.sessionUserName = sessionUserName;
     }
     
     public Instant getCreatedAt() {

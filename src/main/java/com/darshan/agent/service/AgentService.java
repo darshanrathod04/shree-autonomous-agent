@@ -67,7 +67,7 @@ public class AgentService {
             long brainElapsed = System.currentTimeMillis() - brainStart;
             log.info("[AgentService] Brain processing completed in {}ms", brainElapsed);
 
-            // Add agent response to session history
+            // Add agent response to session history for persistence
             sessionManager.addMessage(session, "AI", response.getSuggestion());
 
             long elapsed = System.currentTimeMillis() - start;

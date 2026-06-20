@@ -1,10 +1,13 @@
 package com.darshan.agent.planning;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExecutionPlan {
     private String id;
     private String goalId;

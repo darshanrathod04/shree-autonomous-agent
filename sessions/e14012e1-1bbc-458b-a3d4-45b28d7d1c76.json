@@ -1,0 +1,102 @@
+{
+  "sessionId" : "e14012e1-1bbc-458b-a3d4-45b28d7d1c76",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "DEFAULT",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "pendingAction" : null,
+    "state" : "IDLE",
+    "userName" : "Sohel",
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "sessionUserName" : null,
+  "createdAt" : 1781951069.295380700,
+  "lastAccessedAt" : 1781952756.271569300,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hii i am sohel",
+    "timestamp" : 1781951069.313417800,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.",
+    "timestamp" : 1781951069.371313100,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "Create roadmap",
+    "timestamp" : 1781951106.903098200,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "Which roadmap would you like?\n\n1. Java Developer\n2. Spring Boot\n3. DSA\n4. Interview Preparation\n5. AI Engineer\n",
+    "timestamp" : 1781951106.923812700,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "java developer",
+    "timestamp" : 1781951138.570628400,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDCCB Roadmap Created\n\nGoal: java developer | Progress: 0% | Tasks: 0/20",
+    "timestamp" : 1781951151.783771800,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what should i do next",
+    "timestamp" : 1781951271.251319000,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83C\uDFAF Current Plan\n\nGoal: java developer | Progress: 0% | Tasks: 0/20",
+    "timestamp" : 1781951271.316664500,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "who am i",
+    "timestamp" : 1781951311.363756300,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "Your name is Sohel.",
+    "timestamp" : 1781951311.406012700,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what should i do next",
+    "timestamp" : 1781952645.819932800,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83C\uDFAF Current Plan\n\nGoal: java developer | Progress: 0% | Tasks: 0/20",
+    "timestamp" : 1781952645.846873600,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "ok next",
+    "timestamp" : 1781952655.403789600,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello Sohel! I'm thrilled to see your progress in becoming a Java Developer. To continue advancing, **next steps** are essential for building on what you’ve learned so far. Here is an actionable plan tailored just for you:\n\n1. Strengthen Your Fundamentals (Markdown-Formatted): \n    - Review the core concepts of Java such as variables, data types, control flow and exception handling using resources like [Sams Teach Yourself **Java** in 24 Hours](https://www.samssay.com/teachyourselfjavain24hours). It's a great way to consolidate your understanding before moving forward.\n\n    ```plaintext\n    # Variables and Data Types\n    - Learn about primitive data types like `int`, `float`, and custom classes with methods in Java. \n    ```\n  \n2. Deep Dive into Object-Oriented Programming (Markdown-Formatted):\n    - Explore inheritance, encapsulation, polymorphism, and abstraction to master OOP concepts by using [Head First **Object-Oriented Programming**](https://www.headfirstbooks.com/book/object-oriented-programming). This will give you the tools needed for advanced Java programming projects later on.\n    ```plaintext\n    # Inheritance and Polymorphism in OOP:\n    - Understand how objects can inherit properties from other objects to reduce code duplication. \n    ```\n    \n3. Mastering Core Libraries (Markdown-Formatted):\n    - Familiarize yourself with Java's standard libraries like `java.util`, and explore third-party ones such as Apache Commons Lang for collections, which will be vital in your development journey:\n    ```plaintext\n    # Utilizing the java.util Package: \n    - Practice using Collections Framework components including List, Set, Map interfaces to manipulate data effectively.\n    ```\n    \n4. Hands-On Project Development (Markdown-Formatted):\n    - Implement small projects such as a **ToDo list app** or a simple game that utilizes Java's GUI frameworks like Swing and AWT for practical experience: \n    ```plaintext\n    # ToDo List Application with Swing Library:\n    - Create an interface where users can add, complete tasks, and manage their to-do lists. This will give you a feel of creating user interfaces in Java.\n    ```\n    \n5. Join Coding Communities (Markdown-Formatted):\n    - Engage with the coding community through platforms like Stack Overflow or local meetups for peer support: \n    ```plaintext\n    # Participating in Developer Forums and Meetups:\n    - Share your challenges, seek advice from experienced developers on complex problems. This can enhance problem-solving skills by learning different approaches to coding issues.\n    ```\n    \n6. Continuous Learning Path (Markdown-Formatted): \n   Follow a structured curriculum like the **Oracle's official Java Tutorial** or enroll in courses on platforms such as Coursera and Udemy, where you can learn new concepts at your own pace while working with real projects. Here’s how to get started:\n    ```plaintext\n    # Structured Learning Path for Continued Growth: \n    - Explore Oracle's official **Java Tutorial** and consider advanced courses on Coursera or Udemy that focus on Java development skills like Spring Boot, Maven Project Management, RESTful Web Services with Spring, etc.\n    ```\n    \n7. Portfolio Building (Markdown-Formatted): \n   - Compile a portfolio showcasing your best projects and coding challenges you’ve tackled to demonstrate proficiency:\n    ```plaintext\n    # Creating Your Developer Portfolio Website:\n    - Set up GitHub Pages or create an online profile on platforms like (https://www.linkedin.0) for professional networking, which can open doors to job opportunities and collaborations.\n    ```\n    \nRemember Sohel, becoming a skilled Java developer is about continuous learning and practical application of your knowledge. Keep coding with confidence! \uD83D\uDE80✨ Take your time.",
+    "timestamp" : 1781952756.271569300,
+    "intent" : null
+  } ],
+  "summary" : "USER: hii i am sohel\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.\nUSER: Create roadmap\nAI: Which roadmap would you like?\n\n1. Java Developer\n2...\nUSER: java developer\nAI: \uD83D\uDCCB Roadmap Created\n\nGoal: java developer | Progres...\nUSER: what should i do next\nAI: \uD83C\uDFAF Current Plan\n\nGoal: java developer | Progress: ...\nUSER: who am i\nAI: Your name is Sohel.\n... (4 more messages)\n",
+  "expired" : false,
+  "messageCount" : 14,
+  "firstMessage" : "hii i am sohel"
+}

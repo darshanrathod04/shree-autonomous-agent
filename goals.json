@@ -1,3 +1,9 @@
 {
-  "currentGoal" : null
+  "currentGoal" : {
+    "description" : "java developer",
+    "subGoals" : [ ],
+    "completed" : false,
+    "createdAt" : 1781854233.144165100,
+    "completedAt" : null
+  }
 }

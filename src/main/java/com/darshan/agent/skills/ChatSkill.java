@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class ChatSkill implements Skill {
 
     private final BrainInterface brain;
-    private final UserProfile userProfile;
+
     private final MotivationEngine motivationEngine;
     private final ExecutiveControlEngine executive;
     private final SelfModelEngine selfModel;
@@ -27,7 +27,6 @@ public class ChatSkill implements Skill {
 
     public ChatSkill(
             BrainInterface brain,
-            UserProfile userProfile,
             MotivationEngine motivationEngine,
             ExecutiveControlEngine executive,
             SelfModelEngine selfModel,
@@ -36,7 +35,6 @@ public class ChatSkill implements Skill {
             PromptBuilder promptBuilder
     ) {
         this.brain = brain;
-        this.userProfile = userProfile;
         this.motivationEngine = motivationEngine;
         this.executive = executive;
         this.selfModel = selfModel;
@@ -54,20 +52,42 @@ public class ChatSkill implements Skill {
 
     @Override
     public String execute(String input, ConversationContext context) {
+        System.out.println("[ChatSkill] execute() called | input='" + input + "'");
 
         // HARD IDENTITY RECALL
         if (isIdentityQuestion(input)) {
-            String name = userProfile.getName();
-            if (name != null && !name.isBlank()) {
-                String response = "Your name is " + name + ". I remember you. 🧠";
-                // History is managed by SessionManager - no direct addAgentMessage here
+
+            String sessionName = context != null
+                    ? context.getUserName()
+                    : null;
+
+            System.out.println(
+                    "[ChatSkill] IDENTITY BRANCH | sessionName="
+                            + sessionName);
+
+            if (sessionName != null && !sessionName.isBlank()) {
+
+                String response =
+                        "Your name is " + sessionName + ". I remember you. 🧠";
+
+                System.out.println(
+                        "[ChatSkill] IDENTITY RESPONSE: "
+                                + response);
+
                 return response;
             }
+
             return "I don't know your name yet. Tell me your name and I'll remember it! 😊";
         }
 
         if (isCreatorQuestion(input)) {
-            return "I was created by " + selfModel.creator() + ".";
+            return """
+I was created by Darshan Rathod.
+
+My purpose is to help users learn,
+track goals, remember context,
+and act as an AI assistant.
+""";
         }
 
         if (isMemoryRecallQuestion(input)) {
@@ -112,7 +132,6 @@ public class ChatSkill implements Skill {
         String t = normalize(input);
         return t.contains("who am i")
                 || t.contains("what is my name")
-                || t.contains("my name")
                 || t.contains("mera naam")
                 || t.contains("naam kya")
                 || t.contains("remember me");
