@@ -1,22 +1,22 @@
 {
   "insights" : [ {
-    "id" : "1fedd2da-ecab-4bdb-b6af-7a4c872f1411",
+    "id" : "df1a4d23-6572-4b55-a001-cb423bb807a3",
     "type" : "LEARNING_GAP",
     "severity" : "MEDIUM",
     "priorityScore" : 70,
     "message" : "2 learning topics tracked: Journey, Java",
     "recommendation" : "Review your learning progress and continue with the next topic",
     "resolved" : false,
-    "createdAt" : 1781952554.069666200
+    "createdAt" : 1781957426.827000300
   } ],
   "currentRecommendation" : {
-    "id" : "1fedd2da-ecab-4bdb-b6af-7a4c872f1411",
+    "id" : "df1a4d23-6572-4b55-a001-cb423bb807a3",
     "type" : "LEARNING_GAP",
     "severity" : "MEDIUM",
     "priorityScore" : 70,
     "message" : "2 learning topics tracked: Journey, Java",
     "recommendation" : "Review your learning progress and continue with the next topic",
     "resolved" : false,
-    "createdAt" : 1781952554.069666200
+    "createdAt" : 1781957426.827000300
   }
 }

@@ -59,11 +59,19 @@ public class AutonomousPlanningEngine {
      * Generate a complete execution plan from a goal.
      */
     public ExecutionPlan generatePlan(String goalDescription) {
+        System.out.println("[PLAN_GEN] input=" + goalDescription);
+        String goalBefore = goalManager.hasGoal() ? goalManager.getGoal().getDescription() : "null";
+        System.out.println("[PLAN_GEN] goalBefore=" + goalBefore);
+        
         if (!goalManager.hasGoal() || !goalManager.getGoal().getDescription().equalsIgnoreCase(goalDescription)) {
+            System.out.println("[ROADMAP] Creating new goal for: " + goalDescription);
             goalManager.createGoal(goalDescription);
+        } else {
+            System.out.println("[ROADMAP] Reusing existing goal");
         }
 
         AgentGoal goal = goalManager.getGoal();
+        System.out.println("[PLAN_GEN] goalAfter=" + goal.getDescription());
         ExecutionPlan plan = new ExecutionPlan(goal.getDescription(), goal.getDescription());
         plan.setStatus(PlanStatus.IN_PROGRESS);
 
@@ -78,6 +86,7 @@ public class AutonomousPlanningEngine {
 
         plans.put(plan.getId(), plan);
         activePlan = plan;
+        System.out.println("[ROADMAP] Plan saved with goal: " + plan.getGoalName());
         save();
         return plan;
     }

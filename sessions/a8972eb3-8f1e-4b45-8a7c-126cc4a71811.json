@@ -1,0 +1,72 @@
+{
+  "sessionId" : "a8972eb3-8f1e-4b45-8a7c-126cc4a71811",
+  "userId" : null,
+  "context" : {
+    "lastIntent" : "NEXT_STEP",
+    "mode" : "CHAT",
+    "topic" : null,
+    "currentTopic" : null,
+    "workingMemory" : "",
+    "pendingAction" : null,
+    "state" : "IDLE",
+    "userName" : null,
+    "conversationSummary" : ""
+  },
+  "lessonState" : {
+    "activeTopic" : null,
+    "chapterNumber" : 0,
+    "currentObjective" : null,
+    "lessonName" : null,
+    "completedChapters" : [ ],
+    "pendingFollowups" : [ ],
+    "lessonTopicsCovered" : [ ]
+  },
+  "sessionUserName" : null,
+  "createdAt" : 1781953858.555075700,
+  "lastAccessedAt" : 1781953907.830058500,
+  "messageHistory" : [ {
+    "role" : "USER",
+    "content" : "hello",
+    "timestamp" : 1781953858.561616700,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.",
+    "timestamp" : 1781953858.572025500,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "create roadmap",
+    "timestamp" : 1781953870.176789700,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "Which roadmap would you like?\n\n1. Java Developer\n2. Spring Boot\n3. DSA\n4. Interview Preparation\n5. AI Engineer\n",
+    "timestamp" : 1781953870.178815700,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "spring boot",
+    "timestamp" : 1781953880.724918700,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDCCB Roadmap Created\n\nGoal: java developer | Progress: 0% | Tasks: 0/20",
+    "timestamp" : 1781953880.775183600,
+    "intent" : null
+  }, {
+    "role" : "USER",
+    "content" : "what should i do next",
+    "timestamp" : 1781953907.826782800,
+    "intent" : null
+  }, {
+    "role" : "AI",
+    "content" : "\uD83D\uDCCB **Next Task**\n\n**Research topic**\nGather information\n\n⏱️ Estimated: 4 hours\n\uD83D\uDCCA Priority: HIGH\n\uD83D\uDCC8 Progress: 0%",
+    "timestamp" : 1781953907.830058500,
+    "intent" : null
+  } ],
+  "summary" : "USER: hello\nAI: \uD83D\uDE0A Hello \uD83D\uDC4B I am Shree. Take your time.\nUSER: create roadmap\nAI: Which roadmap would you like?\n\n1. Java Developer\n2...\nUSER: spring boot\nAI: \uD83D\uDCCB Roadmap Created\n\nGoal: java developer | Progres...\nUSER: what should i do next\nAI: \uD83D\uDCCB **Next Task**\n\n**Research topic**\nGather inform...\n",
+  "expired" : false,
+  "firstMessage" : "hello",
+  "messageCount" : 8
+}
