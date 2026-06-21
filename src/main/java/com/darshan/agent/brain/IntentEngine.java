@@ -103,7 +103,12 @@ public class IntentEngine {
             return "REMINDER";
 
         if(text.contains("what should i do next")
+                || text.contains("what next")
+                || text.contains("continue roadmap")
                 || text.equals("next")
+                || text.equals("ok next")
+                || text.equals("okay next")
+                || text.equals("next please")
                 || text.contains("next task")
                 || text.contains("next step")) {
 

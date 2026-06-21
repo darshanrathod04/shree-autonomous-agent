@@ -6,6 +6,7 @@ import com.darshan.agent.cognition.*;
 import com.darshan.agent.memory.UserProfile;
 import com.darshan.agent.planning.AutonomousPlanningEngine;
 import com.darshan.agent.planning.ExecutionPlan;
+import com.darshan.agent.planning.ExecutionTask;
 import com.darshan.agent.context.ConversationContext;
 import com.darshan.agent.context.LessonEngine;
 import com.darshan.agent.context.LessonState;
@@ -21,6 +22,7 @@ import com.darshan.agent.skills.Skill;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgentBrain {
@@ -129,6 +131,8 @@ public class AgentBrain {
 
             context.setPendingAction(null);
 
+            System.out.println("[ROADMAP] User selected=" + input);
+
             ExecutionPlan plan =
                     planningEngine.generatePlan(input);
 
@@ -149,17 +153,6 @@ public class AgentBrain {
 
         // 6. HANDLE INTENTS
         switch (intent) {
-            case "NEXT_STEP": {
-
-                String summary =
-                        planningEngine.getPlanSummary();
-
-                return new AgentResponse(
-                        "🎯 Current Plan\n\n"
-                                + summary,
-                        false
-                );
-            }
             case "ROADMAP_REQUEST": {
 
                 context.setPendingAction(
@@ -225,12 +218,48 @@ public class AgentBrain {
                 return new AgentResponse(result, false);
             }
 
-            case "GOAL_QUERY": {
+        case "GOAL_QUERY": {
                 String goalStatus = promptBuilder.buildGoalContext();
                 if (goalStatus.isEmpty()) {
                     goalStatus = "No active goal. Say 'goal: <description>' to set one.";
                 }
                 return new AgentResponse(goalStatus, false);
+            }
+            case "NEXT_STEP": {
+                System.out.println("[NEXT_STEP] Intent detected");
+                
+                Optional<ExecutionPlan> activePlanOpt = planningEngine.getActivePlan();
+                if (activePlanOpt.isEmpty()) {
+                    System.out.println("[NEXT_STEP] No active plan found");
+                    return new AgentResponse("No active roadmap. Say 'plan: <your goal>' to create one.", false);
+                }
+                
+                ExecutionPlan plan = activePlanOpt.get();
+                System.out.println("[NEXT_STEP] goal=" + plan.getGoalName());
+                
+                List<ExecutionTask> allTasks = plan.getAllTasks();
+                Optional<ExecutionTask> nextTaskOpt = allTasks.stream()
+                        .filter(t -> !t.isCompleted() && !t.isBlocked())
+                        .findFirst();
+                
+                if (nextTaskOpt.isEmpty()) {
+                    System.out.println("[NEXT_STEP] No pending tasks found");
+                    return new AgentResponse("All tasks completed! 🎉 Your roadmap is done.", false);
+                }
+                
+                ExecutionTask nextTask = nextTaskOpt.get();
+                System.out.println("[NEXT_STEP] task=" + nextTask.getTitle());
+                
+                StringBuilder response = new StringBuilder();
+                response.append("📋 **Next Task**\n\n");
+                response.append("**").append(nextTask.getTitle()).append("**\n");
+                response.append(nextTask.getDescription()).append("\n\n");
+                response.append("⏱️ Estimated: ").append((int) nextTask.getEstimatedHours()).append(" hours\n");
+                response.append("📊 Priority: ").append(nextTask.getPriority()).append("\n");
+                response.append("📈 Progress: ").append(String.format("%.0f%%", plan.getOverallProgress()));
+                
+                System.out.println("[NEXT_STEP] returned without LLM");
+                return new AgentResponse(response.toString(), false);
             }
 
         }

@@ -47,11 +47,16 @@ public class GoalManager {
     }
 
     public void createGoal(String description) {
+        String oldGoal = currentGoal != null ? currentGoal.getDescription() : "null";
+        System.out.println("[GOAL_CREATE] old=" + oldGoal);
+        System.out.println("[GOAL] createGoal() called with: " + description);
         if (currentGoal != null && !currentGoal.isCompleted()) {
+            System.out.println("[GOAL] BLOCKED - already working on: " + currentGoal.getDescription());
             return; // already working on something
         }
         currentGoal = new AgentGoal(description);
-        System.out.println("🎯 New Goal Created: " + description);
+        System.out.println("[GOAL_CREATE] new=" + currentGoal.getDescription());
+        System.out.println("[GOAL] Goal after create: " + currentGoal.getDescription());
         save();
     }
 
@@ -76,6 +81,7 @@ public class GoalManager {
         try {
             File file = new File(GOALS_FILE);
             if (!file.exists()) {
+                System.out.println("[GOAL] No goals.json file found");
                 return;
             }
             Map<String, Object> data = mapper.readValue(file,
@@ -84,10 +90,15 @@ public class GoalManager {
                 AgentGoal loaded = mapper.convertValue(data.get("currentGoal"), AgentGoal.class);
                 if (loaded != null && !loaded.isCompleted()) {
                     this.currentGoal = loaded;
-                    System.out.println("📂 Goal restored: " + loaded.getDescription()
+                    System.out.println("[GOAL_LOAD] restored goal=" + loaded.getDescription());
+                    System.out.println("[GOAL] Goal restored from file: " + loaded.getDescription()
                             + " (" + loaded.getSubGoals().stream().filter(s -> !s.isCompleted()).count()
                             + " pending steps)");
+                } else {
+                    System.out.println("[GOAL] Loaded goal is null or completed");
                 }
+            } else {
+                System.out.println("[GOAL] No currentGoal in file");
             }
         } catch (IOException e) {
             System.err.println("Failed to load goals: " + e.getMessage());
