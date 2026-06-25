@@ -261,6 +261,120 @@ public class AgentBrain {
                 System.out.println("[NEXT_STEP] returned without LLM");
                 return new AgentResponse(response.toString(), false);
             }
+            case "COMPLETE_TASK": {
+                System.out.println("[COMPLETE_TASK] Intent detected");
+                
+                Optional<ExecutionPlan> activePlanOpt = planningEngine.getActivePlan();
+                if (activePlanOpt.isEmpty()) {
+                    return new AgentResponse("No active roadmap. Say 'plan: <your goal>' to create one.", false);
+                }
+                
+                ExecutionPlan plan = activePlanOpt.get();
+                List<ExecutionTask> allTasks = plan.getAllTasks();
+                Optional<ExecutionTask> nextTaskOpt = allTasks.stream()
+                        .filter(t -> !t.isCompleted() && !t.isBlocked())
+                        .findFirst();
+                
+                if (nextTaskOpt.isEmpty()) {
+                    return new AgentResponse("All tasks completed! 🎉 Your roadmap is done.", false);
+                }
+                
+                ExecutionTask taskToComplete = nextTaskOpt.get();
+                boolean completed = planningEngine.completeTask(plan.getId(), taskToComplete.getId());
+                
+                if (!completed) {
+                    return new AgentResponse("Failed to mark task as complete. Please try again.", false);
+                }
+                
+                long completedCount = plan.getCompletedTasks();
+                long totalCount = plan.getTotalTasks();
+                double progressPercent = plan.getOverallProgress();
+                
+                StringBuilder response = new StringBuilder();
+                response.append("✅ Task Completed\n\n");
+                response.append("**").append(taskToComplete.getTitle()).append("**\n\n");
+                response.append("Progress: ").append(completedCount).append(" / ").append(totalCount).append(" Tasks\n");
+                response.append("Completion: ").append(String.format("%.0f%%", progressPercent)).append("\n\n");
+                
+                // Show next task if available
+                Optional<ExecutionTask> newNextOpt = allTasks.stream()
+                        .filter(t -> !t.isCompleted() && !t.isBlocked())
+                        .findFirst();
+                
+                if (newNextOpt.isPresent()) {
+                    ExecutionTask newNext = newNextOpt.get();
+                    response.append("Next Task:\n");
+                    response.append(newNext.getTitle());
+                } else {
+                    response.append("🎉 All tasks completed!");
+                }
+                
+                System.out.println("[COMPLETE_TASK] Task marked complete: " + taskToComplete.getTitle());
+                return new AgentResponse(response.toString(), false);
+            }
+            case "PROGRESS": {
+                System.out.println("[PROGRESS] Intent detected");
+                
+                Optional<ExecutionPlan> activePlanOpt = planningEngine.getActivePlan();
+                if (activePlanOpt.isEmpty()) {
+                    return new AgentResponse("No active roadmap. Say 'plan: <your goal>' to create one.", false);
+                }
+                
+                ExecutionPlan plan = activePlanOpt.get();
+                long completedCount = plan.getCompletedTasks();
+                long totalCount = plan.getTotalTasks();
+                double progressPercent = plan.getOverallProgress();
+                
+                StringBuilder response = new StringBuilder();
+                response.append("🎯 Goal: ").append(plan.getGoalName()).append("\n\n");
+                response.append("Progress: ").append(completedCount).append(" / ").append(totalCount).append(" Tasks\n");
+                response.append("Completion: ").append(String.format("%.0f%%", progressPercent)).append("\n");
+                
+                System.out.println("[PROGRESS] Returned progress: " + completedCount + "/" + totalCount);
+                return new AgentResponse(response.toString(), false);
+            }
+            case "CURRENT_TASK": {
+                System.out.println("[CURRENT_TASK] Intent detected");
+                
+                Optional<ExecutionPlan> activePlanOpt = planningEngine.getActivePlan();
+                if (activePlanOpt.isEmpty()) {
+                    return new AgentResponse("No active roadmap. Say 'plan: <your goal>' to create one.", false);
+                }
+                
+                ExecutionPlan plan = activePlanOpt.get();
+                List<ExecutionTask> allTasks = plan.getAllTasks();
+                Optional<ExecutionTask> currentTaskOpt = allTasks.stream()
+                        .filter(t -> !t.isCompleted() && !t.isBlocked())
+                        .findFirst();
+                
+                if (currentTaskOpt.isEmpty()) {
+                    return new AgentResponse("All tasks completed! 🎉 Your roadmap is done.", false);
+                }
+                
+                ExecutionTask currentTask = currentTaskOpt.get();
+                
+                StringBuilder response = new StringBuilder();
+                response.append("📌 Current Task\n\n");
+                response.append("**").append(currentTask.getTitle()).append("**\n\n");
+                response.append("Topics:\n");
+                
+                // Parse description into bullet points
+                String desc = currentTask.getDescription();
+                String[] parts = desc.split("[,;]");
+                for (String part : parts) {
+                    String trimmed = part.trim();
+                    if (!trimmed.isEmpty()) {
+                        response.append("* ").append(trimmed).append("\n");
+                    }
+                }
+                
+                response.append("\n⏱️ Estimated: ").append((int) currentTask.getEstimatedHours()).append(" Hours\n");
+                response.append("📊 Priority: ").append(currentTask.getPriority()).append("\n");
+                response.append("📈 Progress: ").append(String.format("%.0f%%", plan.getOverallProgress()));
+                
+                System.out.println("[CURRENT_TASK] Returned task: " + currentTask.getTitle());
+                return new AgentResponse(response.toString(), false);
+            }
 
         }
 
