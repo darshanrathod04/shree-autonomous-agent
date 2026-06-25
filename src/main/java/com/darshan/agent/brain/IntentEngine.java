@@ -115,6 +115,35 @@ public class IntentEngine {
             return "NEXT_STEP";
         }
 
+        // Complete task
+        if (text.equals("done")
+                || text.equals("completed")
+                || text.equals("finished")
+                || text.contains("task completed")
+                || text.contains("mark complete")
+                || text.equals("mark done")) {
+            return "COMPLETE_TASK";
+        }
+
+        // Progress
+        if (text.contains("progress")
+                || text.contains("show progress")
+                || text.contains("how much completed")
+                || text.contains("roadmap progress")
+                || text.equals("how much done")) {
+            return "PROGRESS";
+        }
+
+        // Current task
+        if (text.contains("current task")
+                || text.contains("what am i doing")
+                || text.contains("active task")
+                || text.contains("what should i study")
+                || text.equals("what should i learn")
+                || text.equals("what to study")) {
+            return "CURRENT_TASK";
+        }
+
         return "DEFAULT";
     }
 
